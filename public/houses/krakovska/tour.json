@@ -1,0 +1,86 @@
+{
+  "title": "krakovska",
+  "start": "technicka",
+  "plan": null,
+  "rooms": [
+    {
+      "id": "technicka",
+      "name": "Technická místnost",
+      "pano": "pano/technicka.jpg",
+      "preview": "pano/technicka-preview.jpg",
+      "planPos": null,
+      "northOffset": 0,
+      "links": []
+    },
+    {
+      "id": "zadveri",
+      "name": "Zádveří",
+      "pano": "pano/zadveri.jpg",
+      "preview": "pano/zadveri-preview.jpg",
+      "planPos": null,
+      "northOffset": 0,
+      "links": []
+    },
+    {
+      "id": "koupelna",
+      "name": "Koupelna",
+      "pano": "pano/koupelna.jpg",
+      "preview": "pano/koupelna-preview.jpg",
+      "planPos": null,
+      "northOffset": 0,
+      "links": []
+    },
+    {
+      "id": "chodba",
+      "name": "Chodba",
+      "pano": "pano/chodba.jpg",
+      "preview": "pano/chodba-preview.jpg",
+      "planPos": null,
+      "northOffset": 0,
+      "links": []
+    },
+    {
+      "id": "loznice",
+      "name": "Ložnice",
+      "pano": "pano/loznice.jpg",
+      "preview": "pano/loznice-preview.jpg",
+      "planPos": null,
+      "northOffset": 0,
+      "links": []
+    },
+    {
+      "id": "pokoj106",
+      "name": "Pokoj 2",
+      "pano": "pano/pokoj106.jpg",
+      "preview": "pano/pokoj106-preview.jpg",
+      "planPos": null,
+      "northOffset": 0,
+      "links": []
+    },
+    {
+      "id": "pokoj105",
+      "name": "Pokoj 1",
+      "pano": "pano/pokoj105.jpg",
+      "preview": "pano/pokoj105-preview.jpg",
+      "planPos": null,
+      "northOffset": 0,
+      "links": []
+    },
+    {
+      "id": "obyvak",
+      "name": "Obývací pokoj + kuchyně",
+      "pano": "pano/obyvak.jpg",
+      "preview": "pano/obyvak-preview.jpg",
+      "planPos": null,
+      "northOffset": 0,
+      "links": []
+    }
+  ],
+  "exterior": [
+    "exterior/01.jpg",
+    "exterior/02.jpg",
+    "exterior/03.jpg",
+    "exterior/04.jpg",
+    "exterior/05.jpg"
+  ]
+}
