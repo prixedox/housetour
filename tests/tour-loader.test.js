@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+﻿import { describe, it, expect, vi } from 'vitest';
 import { validateTour, loadTour, findMissingPanoramas, withoutRooms, TourError } from '../src/tour-loader.js';
 
 const room = (id, extra = {}) => ({ id, name: id.toUpperCase(), pano: `pano/${id}.jpg`, ...extra });
@@ -88,12 +88,12 @@ describe('loadTour', () => {
 
   it('reports a missing house on 404', async () => {
     const fetchImpl = async () => jsonResponse({}, { ok: false });
-    await expect(loadTour('nope', '/houses/nope/', fetchImpl)).rejects.toThrow(new TourError('Prohlídka „nope" neexistuje.'));
+    await expect(loadTour('nope', '/houses/nope/', fetchImpl)).rejects.toThrow(new TourError('Prohlídka „nope“ neexistuje.'));
   });
 
   it('reports a missing house when dev server answers with index.html', async () => {
     const fetchImpl = async () => jsonResponse('<!doctype html>', { type: 'text/html' });
-    await expect(loadTour('nope', '/houses/nope/', fetchImpl)).rejects.toThrow(new TourError('Prohlídka „nope" neexistuje.'));
+    await expect(loadTour('nope', '/houses/nope/', fetchImpl)).rejects.toThrow(new TourError('Prohlídka „nope“ neexistuje.'));
   });
 
   it('reports invalid JSON', async () => {

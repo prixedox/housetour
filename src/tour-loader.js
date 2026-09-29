@@ -1,4 +1,4 @@
-export class TourError extends Error {
+﻿export class TourError extends Error {
   constructor(message) {
     super(message);
     this.name = 'TourError';
@@ -81,7 +81,7 @@ export async function loadTour(houseId, baseUrl, fetchImpl = fetch) {
   }
   // Vite's dev server answers unknown paths with index.html and HTTP 200.
   const type = res.headers.get('content-type') || '';
-  if (!res.ok || !type.includes('json')) throw new TourError(`Prohlídka „${houseId}" neexistuje.`);
+  if (!res.ok || !type.includes('json')) throw new TourError(`Prohlídka „${houseId}“ neexistuje.`);
   let json;
   try {
     json = await res.json();
