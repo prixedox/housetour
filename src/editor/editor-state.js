@@ -59,6 +59,11 @@ export function setStart(tour, id) {
   return { ...tour, start: id };
 }
 
+export function setTitle(tour, title) {
+  const trimmed = typeof title === 'string' ? title.trim() : '';
+  return trimmed ? { ...tour, title: trimmed } : tour;
+}
+
 export function validate(tour) {
   const names = Object.fromEntries(tour.rooms.map((r) => [r.id, r.name]));
   const warnings = [];

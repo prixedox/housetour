@@ -44,6 +44,10 @@ export function validateTour(json) {
   for (const room of rooms) {
     room.links = room.links
       .filter((l) => {
+        if (l && l.to === room.id) {
+          warnings.push(`Místnost ${room.id}: odkaz sám na sebe`);
+          return false;
+        }
         if (l && ids.has(l.to)) return true;
         warnings.push(`Místnost ${room.id}: odkaz na neznámou místnost ${l?.to}`);
         return false;

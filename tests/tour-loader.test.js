@@ -4,6 +4,12 @@ import { validateTour, loadTour, findMissingPanoramas, withoutRooms, TourError }
 const room = (id, extra = {}) => ({ id, name: id.toUpperCase(), pano: `pano/${id}.jpg`, ...extra });
 
 describe('validateTour', () => {
+  it('drops links from a room to itself with a warning', () => {
+    const { tour, warnings } = validateTour({ rooms: [room('a', { links: [{ to: 'a', yaw: 1 }, { to: 'b', yaw: 2 }] }), room('b')] });
+    expect(tour.rooms[0].links.map((l) => l.to)).toEqual(['b']);
+    expect(warnings).toContain('Místnost a: odkaz sám na sebe');
+  });
+
   it('normalizes a minimal tour with defaults', () => {
     const { tour, warnings } = validateTour({ rooms: [room('a')] });
     expect(warnings).toEqual([]);

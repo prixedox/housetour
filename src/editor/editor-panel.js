@@ -1,8 +1,6 @@
-const ESCAPES = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+import { escapeHtml } from '../escape-html.js';
 
-export function escapeHtml(text) {
-  return String(text).replace(/[&<>"']/g, (c) => ESCAPES[c]);
-}
+export { escapeHtml };
 
 export function renderPanel(root, view, on) {
   const { tour, currentId, mode, warnings, status } = view;
@@ -12,6 +10,7 @@ export function renderPanel(root, view, on) {
 
   root.innerHTML = `
     <h2>Editor prohlídky</h2>
+    <label>Název prohlídky <input data-field="title" value="${escapeHtml(tour.title)}" /></label>
     <section>
       <h3>Místnosti</h3>
       <ul class="editor-rooms">
@@ -24,6 +23,7 @@ export function renderPanel(root, view, on) {
     <section>
       <h3>${escapeHtml(current.name)}</h3>
       <label>Název <input data-field="name" value="${escapeHtml(current.name)}" /></label>
+      <label>Panorama <input data-field="pano" value="${escapeHtml(current.pano)}" /></label>
       <label class="editor-check"><input type="checkbox" data-action="start" ${current.id === tour.start ? 'checked disabled' : ''} /> Výchozí místnost</label>
       <div class="editor-row">
         <select data-field="target">
@@ -80,6 +80,8 @@ export function renderPanel(root, view, on) {
   });
   root.querySelector('[data-action="start"]').addEventListener('change', () => on.setStart());
   root.querySelector('[data-field="name"]').addEventListener('change', (e) => on.rename(e.target.value.trim()));
+  root.querySelector('[data-field="title"]').addEventListener('change', (e) => on.setTitle(e.target.value.trim()));
+  root.querySelector('[data-field="pano"]').addEventListener('change', (e) => on.setPano(e.target.value.trim()));
   root.querySelector('[data-field="import"]').addEventListener('change', (e) => {
     const file = e.target.files?.[0];
     if (file) on.importJson(file);

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { escapeHtml } from '../src/editor/editor-panel.js';
+import { escapeHtml } from '../src/escape-html.js';
 
 describe('escapeHtml', () => {
   it('escapes html special characters and keeps diacritics', () => {

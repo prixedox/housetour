@@ -1,3 +1,5 @@
+import { escapeHtml } from '../escape-html.js';
+
 const TAU = 2 * Math.PI;
 
 export function normalizeYaw(yaw) {
@@ -13,7 +15,9 @@ export function tourToNodes(tour, baseUrl) {
   const plan = tour.plan;
   return tour.rooms.map((room) => ({
     id: room.id,
-    name: room.name,
+    // PSV renders name/caption via innerHTML.
+    name: escapeHtml(room.name),
+    caption: escapeHtml(room.name),
     panorama: baseUrl + room.pano,
     thumbnail: room.preview ? baseUrl + room.preview : undefined,
     links: room.links

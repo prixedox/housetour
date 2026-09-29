@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { validateTour } from '../src/tour-loader.js';
 import {
-  addLink, removeLink, moveLink, setPlanPos, setNorth, setRoomProps, setStart, validate, toJSON,
+  addLink, removeLink, moveLink, setPlanPos, setNorth, setRoomProps, setStart, setTitle, validate, toJSON,
 } from '../src/editor/editor-state.js';
 
 const make = () => validateTour({
@@ -106,5 +106,21 @@ describe('toJSON', () => {
   it('writes unplaced links without yaw', () => {
     const t = addLink(make(), 'a', 'b', { yaw: 1, pitch: 0 }, { reverse: true });
     expect(toJSON(t).rooms[1].links).toEqual([{ to: 'a', pitch: 0 }]);
+  });
+});
+
+describe('setTitle', () => {
+  it('sets a trimmed title and returns a new tour', () => {
+    const tour = make();
+    const next = setTitle(tour, '  Nový dům  ');
+    expect(next.title).toBe('Nový dům');
+    expect(next).not.toBe(tour);
+    expect(next.rooms).toBe(tour.rooms);
+  });
+
+  it('ignores empty or whitespace titles', () => {
+    const tour = make();
+    expect(setTitle(tour, '').title).toBe(tour.title);
+    expect(setTitle(tour, '   ').title).toBe(tour.title);
   });
 });

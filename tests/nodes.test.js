@@ -50,6 +50,7 @@ describe('tourToNodes', () => {
     expect(a).toEqual({
       id: 'a',
       name: 'A',
+      caption: 'A',
       panorama: '/houses/x/pano/a.jpg',
       thumbnail: '/houses/x/pano/a-preview.jpg',
       links: [{ nodeId: 'b', position: { yaw: 1, pitch: -0.2 } }],
@@ -68,5 +69,14 @@ describe('tourToNodes', () => {
   it('disables map positions when the tour has no plan', () => {
     const nodes = tourToNodes({ ...tour, plan: null }, '/');
     expect(nodes.every((n) => n.map === false)).toBe(true);
+  });
+});
+
+describe('tourToNodes escaping', () => {
+  it('escapes html in name and caption', () => {
+    const { tour } = validateTour({ rooms: [{ id: 'a', name: '<b>x</b> & y', pano: 'pano/a.jpg' }] });
+    const [a] = tourToNodes(tour, '/');
+    expect(a.name).toBe('&lt;b&gt;x&lt;/b&gt; &amp; y');
+    expect(a.caption).toBe('&lt;b&gt;x&lt;/b&gt; &amp; y');
   });
 });

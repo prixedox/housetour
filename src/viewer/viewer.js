@@ -9,10 +9,7 @@ import '@photo-sphere-viewer/markers-plugin/index.css';
 import '@photo-sphere-viewer/map-plugin/index.css';
 import '@photo-sphere-viewer/gallery-plugin/index.css';
 import '@photo-sphere-viewer/virtual-tour-plugin/index.css';
-import { tourToNodes as baseNodes, entryYaw } from './nodes.js';
-
-// PSV shows node.caption in the navbar; the room name doubles as caption.
-const tourToNodes = (tour, baseUrl) => baseNodes(tour, baseUrl).map((n) => ({ ...n, caption: n.name }));
+import { tourToNodes, entryYaw } from './nodes.js';
 
 const LANG = {
   zoom: 'Přiblížení',
@@ -110,8 +107,10 @@ export function createViewer({ container, tour, baseUrl, startRoom, onRoomChange
     tour: vt,
     map,
     currentRoom: () => vt.getCurrentNode()?.id,
-    reload(nextTour) {
-      vt.setNodes(tourToNodes(nextTour, baseUrl), vt.getCurrentNode()?.id ?? nextTour.start);
+    reload(nextTour, roomId) {
+      // getCurrentNode() is null during a transition, so the caller supplies the room.
+      const target = nextTour.rooms.some((r) => r.id === roomId) ? roomId : nextTour.start;
+      vt.setNodes(tourToNodes(nextTour, baseUrl), target);
     },
     destroy: () => viewer.destroy(),
   };

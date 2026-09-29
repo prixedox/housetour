@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { isPanorama, skeletonTour, parseCrop, cropRect } from '../scripts/lib/house-files.mjs';
+import { isPanorama, skeletonTour, parseCrop, cropRect, validateMapping } from '../scripts/lib/house-files.mjs';
 import { validateTour } from '../src/tour-loader.js';
 
 describe('isPanorama', () => {
@@ -41,5 +41,19 @@ describe('parseCrop / cropRect', () => {
 
   it('converts fractions to pixel rect', () => {
     expect(cropRect([0.1, 0.2, 0.5, 0.5], 1000, 800)).toEqual({ left: 100, top: 160, width: 500, height: 400 });
+  });
+});
+
+describe('validateMapping', () => {
+  it('accepts a valid mapping', () => {
+    expect(() => validateMapping({ 'a.jpg': { id: 'obyvak', name: 'Obývák' }, 'b.jpg': { id: 'room-2', name: 'B' } })).not.toThrow();
+  });
+
+  it.each(['../x', 'a/b', 'A', 'a b', '', undefined])('rejects invalid id %s', (id) => {
+    expect(() => validateMapping({ 'a.jpg': { id, name: 'X' } })).toThrow(/id/i);
+  });
+
+  it('rejects duplicate ids', () => {
+    expect(() => validateMapping({ 'a.jpg': { id: 'x', name: 'A' }, 'b.jpg': { id: 'x', name: 'B' } })).toThrow(/duplic/i);
   });
 });

@@ -2,7 +2,7 @@ import { createViewer } from '../viewer/viewer.js';
 import { renderHeader } from '../viewer/ui.js';
 import { validateTour, TourError } from '../tour-loader.js';
 import {
-  addLink, removeLink, moveLink, setPlanPos, setNorth, setRoomProps, setStart, validate, toJSON,
+  addLink, removeLink, moveLink, setPlanPos, setNorth, setRoomProps, setStart, setTitle, validate, toJSON,
 } from './editor-state.js';
 import { readDraft, writeDraft, clearDraft } from './draft.js';
 import { renderPanel } from './editor-panel.js';
@@ -47,7 +47,8 @@ export function startEditor({ houseId, baseUrl, tour: served, container, headerE
     writeDraft(storage, houseId, tour);
     ui.mode = null;
     ui.status = status;
-    handle.reload(tour);
+    renderHeader(headerEl, `Editor – ${tour.title}`);
+    handle.reload(tour, ui.currentId);
     render();
   }
 
@@ -139,6 +140,8 @@ export function startEditor({ houseId, baseUrl, tour: served, container, headerE
 
   const handlers = {
     selectRoom: (id) => handle.tour.setCurrentNode(id),
+    setTitle: (title) => tryCommit(() => setTitle(tour, title)),
+    setPano: (pano) => tryCommit(() => setRoomProps(tour, ui.currentId, { pano })),
     rename: (name) => tryCommit(() => setRoomProps(tour, ui.currentId, { name })),
     setStart: () => tryCommit(() => setStart(tour, ui.currentId), 'Výchozí místnost nastavena.'),
     startAddLink: (toId, reverse) => {
@@ -167,7 +170,8 @@ export function startEditor({ houseId, baseUrl, tour: served, container, headerE
       clearDraft(storage, houseId);
       ui.currentId = served.start;
       tour = served;
-      handle.reload(tour);
+      renderHeader(headerEl, `Editor – ${tour.title}`);
+      handle.reload(tour, ui.currentId);
       ui.status = 'Koncept zahozen.';
       render();
     },

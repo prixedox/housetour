@@ -1,15 +1,23 @@
 import { readdir, mkdir, readFile, writeFile, access } from 'node:fs/promises';
 import path from 'node:path';
 import sharp from 'sharp';
-import { isPanorama, skeletonTour } from './lib/house-files.mjs';
+import { isPanorama, skeletonTour, validateMapping } from './lib/house-files.mjs';
 
 const [sourceDir, houseId, ...rest] = process.argv.slice(2);
 if (!sourceDir || !/^[a-z0-9-]+$/.test(houseId ?? '')) {
-  console.error('Usage: node scripts/prepare-house.mjs <sourceDir> <houseId> [--map mapping.json]');
+  console.error('Usage: node scripts/prepare-house.mjs <sourceDir> <houseId> [--map mapping.json] [--title "<text>"]');
   process.exit(1);
 }
 const mapIndex = rest.indexOf('--map');
+const titleIndex = rest.indexOf('--title');
+const title = titleIndex >= 0 && rest[titleIndex + 1]?.trim() ? rest[titleIndex + 1].trim() : houseId;
 const mapping = mapIndex >= 0 ? JSON.parse(await readFile(rest[mapIndex + 1], 'utf8')) : {};
+try {
+  validateMapping(mapping);
+} catch (e) {
+  console.error(e.message);
+  process.exit(1);
+}
 
 const outDir = path.join('public', 'houses', houseId);
 await mkdir(path.join(outDir, 'pano'), { recursive: true });
@@ -41,6 +49,6 @@ const exists = await access(tourPath).then(() => true, () => false);
 if (exists) {
   console.log(`${tourPath} exists, not overwritten`);
 } else {
-  await writeFile(tourPath, JSON.stringify(skeletonTour(houseId, rooms, exterior), null, 2) + '\n');
+  await writeFile(tourPath, JSON.stringify(skeletonTour(title, rooms, exterior), null, 2) + '\n');
   console.log(`wrote ${tourPath}`);
 }

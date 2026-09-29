@@ -39,3 +39,17 @@ export function cropRect([x, y, w, h], width, height) {
     height: Math.round(h * height),
   };
 }
+
+const MAPPING_ID = /^[a-z0-9-]+$/;
+
+export function validateMapping(mapping) {
+  const seen = new Set();
+  for (const [file, entry] of Object.entries(mapping)) {
+    const id = entry?.id;
+    if (typeof id !== 'string' || !MAPPING_ID.test(id)) {
+      throw new Error(`Neplatné id "${id}" u souboru ${file} (povoleno a-z, 0-9, pomlčka).`);
+    }
+    if (seen.has(id)) throw new Error(`Duplicitní id "${id}" v mapování (soubor ${file}).`);
+    seen.add(id);
+  }
+}
