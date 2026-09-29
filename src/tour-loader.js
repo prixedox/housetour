@@ -1,4 +1,4 @@
-﻿export class TourError extends Error {
+export class TourError extends Error {
   constructor(message) {
     super(message);
     this.name = 'TourError';
