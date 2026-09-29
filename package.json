@@ -19,7 +19,7 @@
     "@photo-sphere-viewer/map-plugin": "5.15.1",
     "@photo-sphere-viewer/markers-plugin": "5.15.1",
     "@photo-sphere-viewer/virtual-tour-plugin": "5.15.1",
-    "three": "^0.186.1"
+    "three": "0.185.1"
   },
   "devDependencies": {
     "@playwright/test": "^1.63.0",
