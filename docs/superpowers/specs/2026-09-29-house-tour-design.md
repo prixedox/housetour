@@ -45,7 +45,7 @@ Panorama → room mapping:
 ## Tech stack
 
 - Vite + vanilla JavaScript (ES modules), no UI framework.
-- Photo Sphere Viewer 5 (`@photo-sphere-viewer/core`) with plugins: `virtual-tour`, `markers`, `map` (custom image + pixel coords; not the Leaflet-based `plan` plugin, which needs geo coords), `gyroscope`.
+- Photo Sphere Viewer 5 (`@photo-sphere-viewer/core`) with plugins: `virtual-tour`, `markers`, `map` (custom image + pixel coords; not the Leaflet-based `plan` plugin, which needs geo coords), `gallery` (room list), `gyroscope`.
 - `sharp` for image processing (Node script).
 - `pdftoppm` / `pdf-to-img` (npm) for one-time plan rendering.
 - Vitest for unit tests, Playwright for smoke tests.
@@ -95,7 +95,7 @@ house-tour/
       "name": "Obývací pokoj + kuchyně",
       "pano": "pano/obyvak.jpg",
       "preview": "pano/obyvak-preview.jpg",
-      "planPos": [1450, 820],
+      "planPos": [0.723, 0.670],
       "northOffset": 0.0,
       "links": [ { "to": "chodba", "yaw": 1.2, "pitch": -0.1 } ]
     }
@@ -104,8 +104,9 @@ house-tour/
 }
 ```
 
-- `yaw`, `pitch`, `northOffset` in radians.
-- `planPos` in plan image pixels.
+- `yaw`, `pitch`, `northOffset` in radians. `yaw: null` on a link means "reverse link not yet placed" (not rendered by the viewer).
+- `planPos` normalized to the plan image, `[0..1, 0..1]` (survives re-rendering the plan at another scale); `plan.width/height` in pixels are written by `render-plan`.
+- `northOffset` = MapPlugin `rotation` for that room: facing the top of the plan image, `yaw + northOffset = 0`.
 - `planPos` and `links` optional per room (editor fills them).
 - Paths relative to the house folder.
 
@@ -113,32 +114,32 @@ house-tour/
 
 `loadTour(houseId) -> Promise<Tour>`:
 - Fetches `/houses/<houseId>/tour.json`.
-- Throws `TourError` (Czech message) if fetch fails, JSON invalid, `rooms` empty, or `start` not a room id (falls back to first room if `start` missing).
+- Throws `TourError` (Czech message) if fetch fails, response is not JSON (Vite dev server answers unknown paths with index.html + 200), JSON invalid, `rooms` empty, room without id/pano, or duplicate ids. Unknown/missing `start` falls back to first room with a warning.
 - Drops links whose `to` is unknown (console warning).
-- Resolves relative paths to absolute URLs.
+- Paths stay relative in the Tour object (the editor exports them as-is); the viewer prefixes them with the house base URL.
 - Pure validation function `validateTour(json)` separated from fetch for unit testing.
 
 ## Viewer
 
 - URL: `/?house=krakovska` (default house if param missing: first entry — for now `krakovska`), `&room=<id>` deep link.
-- Loads preview first, then full panorama (PSV `panoData`/`sphereCorrection` as needed; preview via VirtualTour node `thumbnail`/progressive loading).
+- Preview images serve as room thumbnails (room list, link tooltips). No progressive preview→4K swap (YAGNI; 4K ≈ 1 MB); loader shown during transitions, neighbours preloaded.
 - Controls: drag/swipe, wheel/pinch zoom, fullscreen, gyroscope toggle (on devices supporting it).
-- Links rendered as VirtualTour arrows/markers at `yaw`/`pitch`. Click: rotate toward link, transition with fade/zoom into target room. Target room opens facing away from the door it was entered through (compute from the reverse link's yaw if present, +π).
-- Minimap: map plugin with `plan.png`, room dots at `planPos`, current room highlighted, heading cone driven by camera yaw + `northOffset`. Clicking a room dot navigates there. Expandable.
-- Room list: menu of room names (with preview thumbnails) for navigation.
-- Header: house title, "Exteriér" button opening lightbox gallery of `exterior` images.
+- Links rendered as VirtualTour arrows/markers at `yaw`/`pitch`. Click: rotate toward link, transition with fade/zoom into target room. Target room opens keeping the walking direction: `entryYaw = linkYaw + fromRoom.northOffset − toRoom.northOffset` (plan-frame heading preserved).
+- Minimap: map plugin (`static: true`, plan stays upright) with `plan.png`, room dots at `planPos`, current room centered, heading cone = camera yaw + room `northOffset` (set as map `rotation` on every room change). Clicking a room dot navigates there. Expandable.
+- Room list: gallery plugin (room names + preview thumbnails), fed automatically by VirtualTour.
+- Header: house title. Navbar button "Exteriér" opens a lightbox of `exterior` images.
 - Preloading: current room + direct link targets.
-- Errors: `TourError` → full-screen Czech error message. Panorama load failure → room hidden from list/map, console warning.
+- Errors: `TourError` → full-screen Czech error message. Before start, each panorama is checked (HEAD, must be an image); missing ones → room and links to it removed, console warning. (Editor mode skips this so nothing is lost on export.)
 - URL updates `room` param on navigation (history.replaceState).
 
 ## Editor (`?edit`)
 
-- Same viewer plus side panel. Autosaves working copy to localStorage key `tour-edit:<houseId>`; on load, offers to restore saved draft if it differs from served `tour.json`.
+- Same viewer plus side panel. Autosaves working copy to localStorage key `tour-edit:<houseId>`; on load, offers to restore saved draft if it differs from served `tour.json`. Invalid/corrupt drafts are ignored; storage errors never break the editor.
 - Room list in panel; selecting loads panorama.
 - "Přidat průchod": next click on panorama captures yaw/pitch, then pick target room from dropdown. Option "i zpětný průchod" creates reverse link B→A with no position; B shows it as "needs placing" until user sets it.
-- Existing links: listed per room; delete button; drag marker to reposition.
-- "Umístit na plán": next click on minimap (expanded) sets `planPos`.
-- "Nastavit sever": stores current camera yaw as `northOffset`.
+- Existing links: listed per room; "Smazat" and "Přesunout" (next panorama click sets new position). No drag (YAGNI).
+- "Umístit na plán": opens a plan overlay (plain `<img>`), click sets normalized `planPos`.
+- "Nastavit sever": user faces the top of the plan; stores `northOffset = normalize(−currentYaw)`.
 - Room properties: name, pano file, "start room" checkbox.
 - "Export tour.json": downloads file. "Import": loads a JSON file into editor.
 - Pre-export validation warnings (non-blocking): rooms with no links, rooms without `planPos`, one-way links, links without position.
@@ -152,7 +153,7 @@ house-tour/
 - Mapping file maps source filename → room id + name; without it, ids are `room1..N`.
 - Generates skeleton `tour.json` if none exists (rooms, no links).
 
-`node scripts/render-plan.mjs <pdf> <houseId> [--crop x,y,w,h]`: renders first page to PNG, optional crop, writes `plan.png`, updates plan width/height in `tour.json`.
+`node scripts/render-plan.mjs <pdf> <houseId> [--crop x,y,w,h] [--scale 4]`: renders first page to PNG, optional crop given as page fractions, writes `plan.png`, updates `plan` {image,width,height} in `tour.json`.
 
 ## Demo content
 
