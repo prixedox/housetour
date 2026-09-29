@@ -1,7 +1,11 @@
 {
   "title": "krakovska",
   "start": "technicka",
-  "plan": null,
+  "plan": {
+    "image": "plan.png",
+    "width": 2906,
+    "height": 3250
+  },
   "rooms": [
     {
       "id": "technicka",
