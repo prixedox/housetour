@@ -1,6 +1,6 @@
 {
-  "title": "krakovska",
-  "start": "technicka",
+  "title": "Novostavba RD Krakovská",
+  "start": "obyvak",
   "plan": {
     "image": "plan.png",
     "width": 2906,
@@ -8,76 +8,178 @@
   },
   "rooms": [
     {
-      "id": "technicka",
-      "name": "Technická místnost",
-      "pano": "pano/technicka.jpg",
-      "preview": "pano/technicka-preview.jpg",
-      "planPos": null,
+      "id": "obyvak",
+      "name": "Obývací pokoj + kuchyně",
+      "pano": "pano/obyvak.jpg",
+      "preview": "pano/obyvak-preview.jpg",
+      "planPos": [
+        0.692,
+        0.616
+      ],
       "northOffset": 0,
-      "links": []
-    },
-    {
-      "id": "zadveri",
-      "name": "Zádveří",
-      "pano": "pano/zadveri.jpg",
-      "preview": "pano/zadveri-preview.jpg",
-      "planPos": null,
-      "northOffset": 0,
-      "links": []
-    },
-    {
-      "id": "koupelna",
-      "name": "Koupelna",
-      "pano": "pano/koupelna.jpg",
-      "preview": "pano/koupelna-preview.jpg",
-      "planPos": null,
-      "northOffset": 0,
-      "links": []
+      "links": [
+        {
+          "to": "chodba",
+          "yaw": 0.39,
+          "pitch": -0.2
+        }
+      ]
     },
     {
       "id": "chodba",
       "name": "Chodba",
       "pano": "pano/chodba.jpg",
       "preview": "pano/chodba-preview.jpg",
-      "planPos": null,
+      "planPos": [
+        0.545,
+        0.588
+      ],
       "northOffset": 0,
-      "links": []
+      "links": [
+        {
+          "to": "koupelna",
+          "yaw": -2.4,
+          "pitch": -0.27
+        },
+        {
+          "to": "zadveri",
+          "yaw": -1.24,
+          "pitch": -0.2
+        },
+        {
+          "to": "obyvak",
+          "yaw": -0.84,
+          "pitch": -0.14
+        },
+        {
+          "to": "loznice",
+          "yaw": 0.79,
+          "pitch": -0.25
+        },
+        {
+          "to": "pokoj106",
+          "yaw": 1.74,
+          "pitch": -0.25
+        },
+        {
+          "to": "pokoj105",
+          "yaw": 2.78,
+          "pitch": -0.25
+        }
+      ]
+    },
+    {
+      "id": "zadveri",
+      "name": "Zádveří",
+      "pano": "pano/zadveri.jpg",
+      "preview": "pano/zadveri-preview.jpg",
+      "planPos": [
+        0.554,
+        0.464
+      ],
+      "northOffset": 0,
+      "links": [
+        {
+          "to": "technicka",
+          "yaw": -1.21,
+          "pitch": -0.2
+        },
+        {
+          "to": "chodba",
+          "yaw": 1.25,
+          "pitch": -0.25
+        }
+      ]
+    },
+    {
+      "id": "technicka",
+      "name": "Technická místnost",
+      "pano": "pano/technicka.jpg",
+      "preview": "pano/technicka-preview.jpg",
+      "planPos": [
+        0.645,
+        0.447
+      ],
+      "northOffset": 0,
+      "links": [
+        {
+          "to": "zadveri",
+          "yaw": -0.04,
+          "pitch": -0.25
+        }
+      ]
+    },
+    {
+      "id": "koupelna",
+      "name": "Koupelna",
+      "pano": "pano/koupelna.jpg",
+      "preview": "pano/koupelna-preview.jpg",
+      "planPos": [
+        0.45,
+        0.486
+      ],
+      "northOffset": 0,
+      "links": [
+        {
+          "to": "chodba",
+          "yaw": -2.25,
+          "pitch": -0.25
+        }
+      ]
     },
     {
       "id": "loznice",
       "name": "Ložnice",
       "pano": "pano/loznice.jpg",
       "preview": "pano/loznice-preview.jpg",
-      "planPos": null,
+      "planPos": [
+        0.527,
+        0.689
+      ],
       "northOffset": 0,
-      "links": []
-    },
-    {
-      "id": "pokoj106",
-      "name": "Pokoj 2",
-      "pano": "pano/pokoj106.jpg",
-      "preview": "pano/pokoj106-preview.jpg",
-      "planPos": null,
-      "northOffset": 0,
-      "links": []
+      "links": [
+        {
+          "to": "chodba",
+          "yaw": -1.82,
+          "pitch": -0.2
+        }
+      ]
     },
     {
       "id": "pokoj105",
       "name": "Pokoj 1",
       "pano": "pano/pokoj105.jpg",
       "preview": "pano/pokoj105-preview.jpg",
-      "planPos": null,
+      "planPos": [
+        0.312,
+        0.467
+      ],
       "northOffset": 0,
-      "links": []
+      "links": [
+        {
+          "to": "chodba",
+          "yaw": 1.77,
+          "pitch": -0.2
+        }
+      ]
     },
     {
-      "id": "obyvak",
-      "name": "Obývací pokoj + kuchyně",
-      "pano": "pano/obyvak.jpg",
-      "preview": "pano/obyvak-preview.jpg",
-      "planPos": null,
+      "id": "pokoj106",
+      "name": "Pokoj 2",
+      "pano": "pano/pokoj106.jpg",
+      "preview": "pano/pokoj106-preview.jpg",
+      "planPos": [
+        0.352,
+        0.693
+      ],
       "northOffset": 0,
-      "links": []
+      "links": [
+        {
+          "to": "chodba",
+          "yaw": -0.99,
+          "pitch": -0.2
+        }
+      ]
     }
   ],
   "exterior": [
