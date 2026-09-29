@@ -1,4 +1,6 @@
 import { test, expect } from '@playwright/test';
+import { readFile } from 'node:fs/promises';
+import { validateTour } from '../../src/tour-loader.js';
 
 test('tour loads start room and navigates through a link', async ({ page }) => {
   await page.goto('/?house=krakovska');
@@ -20,4 +22,18 @@ test('deep link opens the requested room', async ({ page }) => {
 test('unknown house shows czech error', async ({ page }) => {
   await page.goto('/?house=neexistuje');
   await expect(page.locator('.error-screen')).toHaveText('Prohlídka „neexistuje“ neexistuje.');
+});
+
+test('editor exports a valid tour.json', async ({ page }) => {
+  page.on('dialog', (d) => d.dismiss());
+  await page.goto('/?house=krakovska&edit');
+  await expect(page.locator('.editor-panel')).toBeVisible();
+  const [download] = await Promise.all([
+    page.waitForEvent('download'),
+    page.locator('button[data-action="export"]').click(),
+  ]);
+  expect(download.suggestedFilename()).toBe('tour.json');
+  const json = JSON.parse(await readFile(await download.path(), 'utf8'));
+  const { tour } = validateTour(json);
+  expect(tour.rooms).toHaveLength(8);
 });
