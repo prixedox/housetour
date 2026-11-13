@@ -8,7 +8,8 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
 const BASE = '/housetour/';
-const run = (cmd, args, cwd) => execFileSync(cmd, args, { cwd, stdio: 'inherit', shell: process.platform === 'win32' });
+// npx is a .cmd file on Windows and needs a shell; git must not get one (it would split args with spaces).
+const run = (cmd, args, cwd) => execFileSync(cmd, args, { cwd, stdio: 'inherit', shell: cmd === 'npx' && process.platform === 'win32' });
 const out = (cmd, args) => execFileSync(cmd, args, { encoding: 'utf8' }).trim();
 
 const dir = join(tmpdir(), 'housetour-pages');
