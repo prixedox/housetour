@@ -33,12 +33,12 @@ test('deep link opens the requested room', async ({ page }) => {
   await expect(page).toHaveURL(/room=koupelna/);
 });
 
-test('house with a garden opens outside, where the minimap is hidden', async ({ page }) => {
+test('house with a garden opens outside, on the garden map', async ({ page }) => {
   await page.goto('/?house=trojanovice');
   await expect(page.locator('#header h1')).toHaveText('Beskydská chalupa Trojanovice');
   await expect(page.locator('.psv-caption-content')).toHaveText('Před chalupou', { timeout: 30_000 });
-  // The garden is not on the floor plan.
-  await expect(page.locator('.psv-map')).toBeHidden();
+  await expect(page.locator('.psv-map')).toBeVisible();
+  await expect(page.locator('.floor-tabs button.is-active')).toHaveText('Zahrada');
 });
 
 test('room on the upper floor shows the minimap', async ({ page }) => {

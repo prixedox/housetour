@@ -11,6 +11,11 @@ export function entryYaw(linkYaw, fromNorth, toNorth) {
   return normalizeYaw(linkYaw + fromNorth - toNorth);
 }
 
+// Yaw to face after walking through a link at `linkYaw`; `from` and `to` are node data.
+export function arrivalYaw(linkYaw, from, to) {
+  return to.fixedView ? to.startYaw : entryYaw(linkYaw, from.northOffset, to.northOffset);
+}
+
 // Where the minimap centres for one floor, in plan image pixels: the middle of that floor's
 // part of the plan image when the plan lists its floors, else the middle of its photo spots.
 export function planAnchor(tour, floor) {
@@ -36,6 +41,6 @@ export function tourToNodes(tour, baseUrl) {
       .filter((l) => l.yaw !== null)
       .map((l) => ({ nodeId: l.to, position: { yaw: l.yaw, pitch: l.pitch } })),
     map: plan && room.planPos ? { x: room.planPos[0] * plan.width, y: room.planPos[1] * plan.height } : false,
-    data: { northOffset: room.northOffset, floor: room.floor },
+    data: { northOffset: room.northOffset, floor: room.floor, startYaw: room.startYaw, fixedView: room.fixedView },
   }));
 }

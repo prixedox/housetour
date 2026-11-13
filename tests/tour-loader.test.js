@@ -18,8 +18,13 @@ describe('validateTour', () => {
       start: 'a',
       plan: null,
       exterior: [],
-      rooms: [{ id: 'a', name: 'A', pano: 'pano/a.jpg', preview: null, planPos: null, floor: null, northOffset: 0, startYaw: 0, links: [] }],
+      rooms: [{ id: 'a', name: 'A', pano: 'pano/a.jpg', preview: null, planPos: null, floor: null, northOffset: 0, startYaw: 0, fixedView: false, links: [] }],
     });
+  });
+
+  it('keeps the fixed view of a room only when it is true', () => {
+    const { tour } = validateTour({ rooms: [room('a', { fixedView: true }), room('b', { fixedView: 'yes' })] });
+    expect(tour.rooms.map((r) => r.fixedView)).toEqual([true, false]);
   });
 
   it('keeps the yaw a room opens at', () => {

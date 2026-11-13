@@ -36,6 +36,8 @@ function normalizeRoom(r, index, ids) {
     northOffset: Number.isFinite(r.northOffset) ? r.northOffset : 0,
     // Where the view points when the tour opens in this room (walking in keeps the heading).
     startYaw: Number.isFinite(r.startYaw) ? r.startYaw : 0,
+    // Garden spots are far apart, so walking in turns to startYaw instead of keeping the heading.
+    fixedView: r.fixedView === true,
     links: Array.isArray(r.links) ? r.links : [],
   };
 }

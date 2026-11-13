@@ -9,7 +9,7 @@ import '@photo-sphere-viewer/markers-plugin/index.css';
 import '@photo-sphere-viewer/map-plugin/index.css';
 import '@photo-sphere-viewer/gallery-plugin/index.css';
 import '@photo-sphere-viewer/virtual-tour-plugin/index.css';
-import { tourToNodes, entryYaw, planAnchor } from './nodes.js';
+import { tourToNodes, arrivalYaw, planAnchor } from './nodes.js';
 
 const LANG = {
   zoom: 'Přiblížení',
@@ -95,7 +95,7 @@ export function createViewer({ container, tour, baseUrl, startRoom, onRoomChange
       rotation: true,
       showLoader: true,
       ...(fromLink && fromNode
-        ? { rotateTo: { yaw: entryYaw(fromLink.position.yaw, fromNode.data.northOffset, toNode.data.northOffset), pitch: 0 } }
+        ? { rotateTo: { yaw: arrivalYaw(fromLink.position.yaw, fromNode.data, toNode.data), pitch: 0 } }
         : {}),
     }),
     ...(hasPlan ? { map: { imageUrl: baseUrl + tour.plan.image, size: { width: tour.plan.width, height: tour.plan.height }, recenter: false } } : {}),

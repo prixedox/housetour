@@ -14,7 +14,7 @@ const throwingStorage = {
   setItem() { throw new Error('denied'); },
   removeItem() { throw new Error('denied'); },
 };
-const tour = { title: 'T', start: 'a', plan: null, exterior: [], rooms: [{ id: 'a', name: 'A', pano: 'p.jpg', preview: null, planPos: null, floor: null, northOffset: 0, startYaw: 0, links: [] }] };
+const tour = { title: 'T', start: 'a', plan: null, exterior: [], rooms: [{ id: 'a', name: 'A', pano: 'p.jpg', preview: null, planPos: null, floor: null, northOffset: 0, startYaw: 0, fixedView: false, links: [] }] };
 
 describe('draft storage', () => {
   it('writes and reads back a draft', () => {

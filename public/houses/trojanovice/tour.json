@@ -3,7 +3,7 @@
   "start": "venek",
   "plan": {
     "image": "plan.png",
-    "width": 5585,
+    "width": 8019,
     "height": 2052,
     "floors": [
       {
@@ -15,6 +15,11 @@
         "name": "Podkroví",
         "x": 2929,
         "width": 2656
+      },
+      {
+        "name": "Zahrada",
+        "x": 5967,
+        "width": 2052
       }
     ]
   },
@@ -24,8 +29,14 @@
       "name": "Před chalupou",
       "pano": "pano/venek.jpg",
       "preview": "pano/venek-preview.jpg",
+      "planPos": [
+        0.936,
+        0.6184
+      ],
+      "floor": "Zahrada",
       "northOffset": -1.745,
       "startYaw": 0.873,
+      "fixedView": true,
       "links": [
         {
           "to": "krizovatka",
@@ -34,8 +45,8 @@
         },
         {
           "to": "jezirko",
-          "yaw": -1.658,
-          "pitch": -0.105
+          "yaw": -1.012,
+          "pitch": -0.087
         },
         {
           "to": "minigolf",
@@ -55,7 +66,7 @@
       "pano": "pano/krizovatka.jpg",
       "preview": "pano/krizovatka-preview.jpg",
       "planPos": [
-        0.3236,
+        0.2254,
         0.8536
       ],
       "floor": "Přízemí",
@@ -90,7 +101,7 @@
       "pano": "pano/terasa.jpg",
       "preview": "pano/terasa-preview.jpg",
       "planPos": [
-        0.3841,
+        0.2675,
         0.827
       ],
       "floor": "Přízemí",
@@ -115,7 +126,7 @@
       "pano": "pano/vchod.jpg",
       "preview": "pano/vchod-preview.jpg",
       "planPos": [
-        0.2678,
+        0.1865,
         0.7132
       ],
       "floor": "Přízemí",
@@ -150,7 +161,7 @@
       "pano": "pano/chodba.jpg",
       "preview": "pano/chodba-preview.jpg",
       "planPos": [
-        0.2971,
+        0.2069,
         0.5766
       ],
       "floor": "Přízemí",
@@ -184,7 +195,7 @@
       "pano": "pano/chodba2.jpg",
       "preview": "pano/chodba2-preview.jpg",
       "planPos": [
-        0.2845,
+        0.1981,
         0.1972
       ],
       "floor": "Přízemí",
@@ -213,7 +224,7 @@
       "pano": "pano/obyvak.jpg",
       "preview": "pano/obyvak-preview.jpg",
       "planPos": [
-        0.4017,
+        0.2798,
         0.2162
       ],
       "floor": "Přízemí",
@@ -238,7 +249,7 @@
       "pano": "pano/jidelna.jpg",
       "preview": "pano/jidelna-preview.jpg",
       "planPos": [
-        0.3821,
+        0.2661,
         0.4704
       ],
       "floor": "Přízemí",
@@ -262,7 +273,7 @@
       "pano": "pano/kuchyn.jpg",
       "preview": "pano/kuchyn-preview.jpg",
       "planPos": [
-        0.2036,
+        0.1418,
         0.2466
       ],
       "floor": "Přízemí",
@@ -281,7 +292,7 @@
       "pano": "pano/koupelna.jpg",
       "preview": "pano/koupelna-preview.jpg",
       "planPos": [
-        0.2148,
+        0.1496,
         0.5501
       ],
       "floor": "Přízemí",
@@ -301,7 +312,7 @@
       "pano": "pano/sauna.jpg",
       "preview": "pano/sauna-preview.jpg",
       "planPos": [
-        0.1478,
+        0.1029,
         0.6411
       ],
       "floor": "Přízemí",
@@ -321,7 +332,7 @@
       "pano": "pano/podkrovi.jpg",
       "preview": "pano/podkrovi-preview.jpg",
       "planPos": [
-        0.8048,
+        0.5605,
         0.2846
       ],
       "floor": "Podkroví",
@@ -355,7 +366,7 @@
       "pano": "pano/loznice1.jpg",
       "preview": "pano/loznice1-preview.jpg",
       "planPos": [
-        0.7057,
+        0.4915,
         0.4516
       ],
       "floor": "Podkroví",
@@ -375,7 +386,7 @@
       "pano": "pano/loznice2.jpg",
       "preview": "pano/loznice2-preview.jpg",
       "planPos": [
-        0.9233,
+        0.6431,
         0.2694
       ],
       "floor": "Podkroví",
@@ -395,7 +406,7 @@
       "pano": "pano/loznice3.jpg",
       "preview": "pano/loznice3-preview.jpg",
       "planPos": [
-        0.9121,
+        0.6353,
         0.4668
       ],
       "floor": "Podkroví",
@@ -415,7 +426,7 @@
       "pano": "pano/herna.jpg",
       "preview": "pano/herna-preview.jpg",
       "planPos": [
-        0.1339,
+        0.0933,
         0.368
       ],
       "floor": "Přízemí",
@@ -435,7 +446,7 @@
       "pano": "pano/garaz.jpg",
       "preview": "pano/garaz-preview.jpg",
       "planPos": [
-        0.0753,
+        0.0524,
         0.44
       ],
       "floor": "Přízemí",
@@ -459,7 +470,7 @@
       "pano": "pano/drevnik.jpg",
       "preview": "pano/drevnik-preview.jpg",
       "planPos": [
-        0.0139,
+        0.0097,
         0.8536
       ],
       "floor": "Přízemí",
@@ -487,8 +498,14 @@
       "name": "Jezírko",
       "pano": "pano/jezirko.jpg",
       "preview": "pano/jezirko-preview.jpg",
-      "northOffset": -1.833,
+      "planPos": [
+        0.9226,
+        0.8026
+      ],
+      "floor": "Zahrada",
+      "northOffset": -1.222,
       "startYaw": -1.745,
+      "fixedView": true,
       "links": [
         {
           "to": "wellness",
@@ -517,7 +534,13 @@
       "name": "Wellness domek",
       "pano": "pano/wellness.jpg",
       "preview": "pano/wellness-preview.jpg",
-      "northOffset": 2.67,
+      "planPos": [
+        0.9007,
+        0.7303
+      ],
+      "floor": "Zahrada",
+      "northOffset": 0.611,
+      "fixedView": true,
       "links": [
         {
           "to": "jezirko",
@@ -531,8 +554,14 @@
       "name": "Minigolf",
       "pano": "pano/minigolf.jpg",
       "preview": "pano/minigolf-preview.jpg",
-      "northOffset": -0.052,
+      "planPos": [
+        0.8788,
+        0.1711
+      ],
+      "floor": "Zahrada",
+      "northOffset": -1.745,
       "startYaw": 0.262,
+      "fixedView": true,
       "links": [
         {
           "to": "venek",
@@ -551,7 +580,13 @@
       "name": "Pohled z dronu",
       "pano": "pano/dron.jpg",
       "preview": "pano/dron-preview.jpg",
-      "northOffset": 0,
+      "planPos": [
+        0.8956,
+        0.25
+      ],
+      "floor": "Zahrada",
+      "northOffset": -3.142,
+      "fixedView": true,
       "links": [
         {
           "to": "venek",

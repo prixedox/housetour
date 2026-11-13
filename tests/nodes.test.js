@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { normalizeYaw, entryYaw, tourToNodes, planAnchor } from '../src/viewer/nodes.js';
+import { normalizeYaw, entryYaw, arrivalYaw, tourToNodes, planAnchor } from '../src/viewer/nodes.js';
 import { validateTour } from '../src/tour-loader.js';
 
 const TAU = 2 * Math.PI;
@@ -33,6 +33,18 @@ describe('entryYaw', () => {
   });
 });
 
+describe('arrivalYaw', () => {
+  const from = { northOffset: 0.5 };
+
+  it('keeps the walking direction by default', () => {
+    expect(arrivalYaw(1.0, from, { northOffset: 2.0, startYaw: 0.3, fixedView: false })).toBeCloseTo(entryYaw(1.0, 0.5, 2.0));
+  });
+
+  it('opens a room with a fixed view at its own yaw', () => {
+    expect(arrivalYaw(1.0, from, { northOffset: 2.0, startYaw: 0.3, fixedView: true })).toBe(0.3);
+  });
+});
+
 describe('tourToNodes', () => {
   const { tour } = validateTour({
     plan: { image: 'plan.png', width: 2000, height: 1000 },
@@ -55,7 +67,7 @@ describe('tourToNodes', () => {
       thumbnail: '/houses/x/pano/a-preview.jpg',
       links: [{ nodeId: 'b', position: { yaw: 1, pitch: -0.2 } }],
       map: { x: 500, y: 500 },
-      data: { northOffset: 0.7, floor: null },
+      data: { northOffset: 0.7, floor: null, startYaw: 0, fixedView: false },
     });
     expect(b.thumbnail).toBeUndefined();
     expect(b.map).toBe(false);

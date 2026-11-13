@@ -4,11 +4,13 @@ import sharp from 'sharp';
 import { pdf } from 'pdf-to-img';
 import { parseCrop, cropRect } from './lib/house-files.mjs';
 
-const USAGE = 'Usage: node scripts/render-plan.mjs <pdf> [<pdf of next floor> …] <houseId> [--rotate 90|180|270] [--crop x,y,w,h …] [--floor <name> …] [--scale 4]';
+const USAGE = 'Usage: node scripts/render-plan.mjs <pdf|image> [<next floor> …] <houseId> [--rotate 90|180|270 …] [--crop x,y,w,h …] [--floor <name> …] [--scale 4]';
 
-// Leading *.pdf arguments are the floors, drawn left to right into one plan image.
+// Leading file arguments are the floors, drawn left to right into one plan image: a PDF
+// (its first page) or an image such as a garden map (SVG, PNG, JPG), used at its own size.
+const FLOOR_FILE = /\.(pdf|svg|png|jpe?g)$/i;
 const args = process.argv.slice(2);
-const firstOther = args.findIndex((a) => !/\.pdf$/i.test(a));
+const firstOther = args.findIndex((a) => !FLOOR_FILE.test(a));
 const pdfPaths = firstOther > 0 ? args.slice(0, firstOther) : [];
 const [houseId, ...rest] = firstOther > 0 ? args.slice(firstOther) : [];
 if (pdfPaths.length === 0 || !/^[a-z0-9-]+$/.test(houseId ?? '')) {
@@ -21,13 +23,19 @@ const crops = opts('--crop').map(parseCrop);
 // One --floor per PDF names the floors; rooms in tour.json refer to these names.
 const names = opts('--floor');
 const scale = Number(opts('--scale')[0] ?? 4);
-const rotate = Number(opts('--rotate')[0] ?? 0);
+// One --rotate turns every floor; several are taken per floor, in order.
+const rotations = opts('--rotate').map(Number);
+const rotationOf = (i) => (rotations.length === 1 ? rotations[0] : rotations[i] ?? 0);
 
-async function renderFloor(pdfPath, crop) {
+async function renderFloor(file, crop, rotate) {
   let page;
-  for await (const p of await pdf(pdfPath, { scale })) {
-    page = p;
-    break;
+  if (/\.pdf$/i.test(file)) {
+    for await (const p of await pdf(file, { scale })) {
+      page = p;
+      break;
+    }
+  } else {
+    page = await sharp(file).png().toBuffer();
   }
   // Rotate first (plans are often drawn sideways), so the crop is given as the result looks.
   const upright = rotate ? await sharp(page).rotate(rotate).png().toBuffer() : page;
@@ -37,7 +45,7 @@ async function renderFloor(pdfPath, crop) {
 }
 
 const floors = [];
-for (const [i, pdfPath] of pdfPaths.entries()) floors.push(await renderFloor(pdfPath, crops[i]));
+for (const [i, file] of pdfPaths.entries()) floors.push(await renderFloor(file, crops[i], rotationOf(i)));
 
 // The gap keeps the neighbouring floor out of the minimap, which shows one floor at a time.
 const gap = Math.round(floors[0].info.width * 0.15);

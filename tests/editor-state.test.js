@@ -104,11 +104,12 @@ describe('toJSON', () => {
   });
 
   it('keeps the floor and opening yaw of a room', () => {
-    const { tour } = validateTour({ rooms: [{ id: 'a', pano: 'a.jpg', floor: 'podkrovi', startYaw: 1.23456 }, { id: 'b', pano: 'b.jpg' }] });
+    const { tour } = validateTour({ rooms: [{ id: 'a', pano: 'a.jpg', floor: 'podkrovi', startYaw: 1.23456, fixedView: true }, { id: 'b', pano: 'b.jpg' }] });
     const [a, b] = toJSON(tour).rooms;
-    expect(a).toMatchObject({ floor: 'podkrovi', startYaw: 1.235 });
+    expect(a).toMatchObject({ floor: 'podkrovi', startYaw: 1.235, fixedView: true });
     expect(b).not.toHaveProperty('floor');
     expect(b).not.toHaveProperty('startYaw');
+    expect(b).not.toHaveProperty('fixedView');
   });
 
   it('writes unplaced links without yaw', () => {

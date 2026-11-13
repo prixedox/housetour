@@ -24,6 +24,8 @@ URL parameters: `house=<id>` (house folder), `room=<id>` (start room), `edit` (e
    `node scripts/render-plan.mjs <přízemí.pdf> <podkroví.pdf> <id> --rotate 270 --crop … --crop … --floor "Přízemí" --floor "Podkroví"`
    (`--rotate` turns sideways drawings upright; one `--crop` per floor, given as the turned page looks;
    one `--floor` name per PDF, written to `plan.floors` and shown as tabs on the plan).
+   A "floor" can also be an image, for example a garden map: `houses-src/trojanovice.zahrada.svg`
+   is drawn in metres and added as the third part, `Zahrada`.
 5. `npm run dev`, open `/?house=<id>&edit`:
    - per room: pick target → "Přidat průchod" → click the doorway,
    - "Umístit na plán" → click the room on the plan,
@@ -36,6 +38,8 @@ Optional fields of a room in `tour.json`, written by hand:
 - `floor`: name of the floor, one of the names in `plan.floors` (for example `"Přízemí"`). The plan
   then shows the floor of the current room, with tabs to look at the others.
 - `startYaw`: where the view points (radians) when the tour opens in that room.
+- `fixedView: true`: walking in also turns to `startYaw` instead of keeping the walking direction
+  (garden spots are far apart, so the direction means little there).
 - A room without `planPos` (garden, drone photo) hides the minimap while you are in it.
 
 The second house, `trojanovice` (`/?house=trojanovice`), uses all three.
