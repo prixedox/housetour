@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { normalizeYaw, entryYaw, tourToNodes } from '../src/viewer/nodes.js';
+import { normalizeYaw, entryYaw, tourToNodes, planAnchor } from '../src/viewer/nodes.js';
 import { validateTour } from '../src/tour-loader.js';
 
 const TAU = 2 * Math.PI;
@@ -55,7 +55,7 @@ describe('tourToNodes', () => {
       thumbnail: '/houses/x/pano/a-preview.jpg',
       links: [{ nodeId: 'b', position: { yaw: 1, pitch: -0.2 } }],
       map: { x: 500, y: 500 },
-      data: { northOffset: 0.7 },
+      data: { northOffset: 0.7, floor: null },
     });
     expect(b.thumbnail).toBeUndefined();
     expect(b.map).toBe(false);
@@ -69,6 +69,27 @@ describe('tourToNodes', () => {
   it('disables map positions when the tour has no plan', () => {
     const nodes = tourToNodes({ ...tour, plan: null }, '/');
     expect(nodes.every((n) => n.map === false)).toBe(true);
+  });
+});
+
+describe('planAnchor', () => {
+  const { tour } = validateTour({
+    plan: { image: 'plan.png', width: 1000, height: 500 },
+    rooms: [
+      { id: 'a', pano: 'a.jpg', planPos: [0.25, 0.5], floor: 'prizemi' },
+      { id: 'b', pano: 'b.jpg', planPos: [0.75, 0.25], floor: 'prizemi' },
+      { id: 'c', pano: 'c.jpg', planPos: [0.5, 0.75], floor: 'podkrovi' },
+      { id: 'd', pano: 'd.jpg', floor: 'podkrovi' },
+    ],
+  });
+
+  it('is the middle of the photo spots of one floor, in plan pixels', () => {
+    expect(planAnchor(tour, 'prizemi')).toEqual({ x: 500, y: 187.5 });
+    expect(planAnchor(tour, 'podkrovi')).toEqual({ x: 500, y: 375 });
+  });
+
+  it('is null for a floor without photo spots', () => {
+    expect(planAnchor(tour, null)).toBeNull();
   });
 });
 

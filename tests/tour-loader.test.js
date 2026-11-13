@@ -18,8 +18,18 @@ describe('validateTour', () => {
       start: 'a',
       plan: null,
       exterior: [],
-      rooms: [{ id: 'a', name: 'A', pano: 'pano/a.jpg', preview: null, planPos: null, northOffset: 0, links: [] }],
+      rooms: [{ id: 'a', name: 'A', pano: 'pano/a.jpg', preview: null, planPos: null, floor: null, northOffset: 0, startYaw: 0, links: [] }],
     });
+  });
+
+  it('keeps the yaw a room opens at', () => {
+    const { tour } = validateTour({ rooms: [room('a', { startYaw: 1.2 }), room('b', { startYaw: 'left' })] });
+    expect(tour.rooms.map((r) => r.startYaw)).toEqual([1.2, 0]);
+  });
+
+  it('keeps the floor of a room when it is a name', () => {
+    const { tour } = validateTour({ rooms: [room('a', { floor: 'podkrovi' }), room('b', { floor: 2 })] });
+    expect(tour.rooms.map((r) => r.floor)).toEqual(['podkrovi', null]);
   });
 
   it('keeps optional fields when valid', () => {

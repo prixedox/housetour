@@ -103,6 +103,14 @@ describe('toJSON', () => {
     expect(validateTour(JSON.parse(JSON.stringify(json))).tour).toEqual(validateTour(json).tour);
   });
 
+  it('keeps the floor and opening yaw of a room', () => {
+    const { tour } = validateTour({ rooms: [{ id: 'a', pano: 'a.jpg', floor: 'podkrovi', startYaw: 1.23456 }, { id: 'b', pano: 'b.jpg' }] });
+    const [a, b] = toJSON(tour).rooms;
+    expect(a).toMatchObject({ floor: 'podkrovi', startYaw: 1.235 });
+    expect(b).not.toHaveProperty('floor');
+    expect(b).not.toHaveProperty('startYaw');
+  });
+
   it('writes unplaced links without yaw', () => {
     const t = addLink(make(), 'a', 'b', { yaw: 1, pitch: 0 }, { reverse: true });
     expect(toJSON(t).rooms[1].links).toEqual([{ to: 'a', pitch: 0 }]);

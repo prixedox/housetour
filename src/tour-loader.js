@@ -27,7 +27,11 @@ function normalizeRoom(r, index, ids) {
     pano: r.pano,
     preview: isNonEmptyString(r.preview) ? r.preview : null,
     planPos: isPoint(r.planPos) ? [r.planPos[0], r.planPos[1]] : null,
+    // Name of the floor the room is on, for plans that show several floors side by side.
+    floor: isNonEmptyString(r.floor) ? r.floor : null,
     northOffset: Number.isFinite(r.northOffset) ? r.northOffset : 0,
+    // Where the view points when the tour opens in this room (walking in keeps the heading).
+    startYaw: Number.isFinite(r.startYaw) ? r.startYaw : 0,
     links: Array.isArray(r.links) ? r.links : [],
   };
 }

@@ -4,7 +4,7 @@ import { validateTour } from '../../src/tour-loader.js';
 
 test('tour loads start room and navigates through a link', async ({ page }) => {
   await page.goto('/?house=krakovska');
-  await expect(page.locator('#header h1')).toHaveText('Novostavba RD Krakovská');
+  await expect(page.locator('#header h1')).toHaveText('Novostavba RD Krnalovice');
   // The hallway doorway is about 90° to the left of the start view; turn towards it.
   await expect(page.locator('.psv-caption-content')).toHaveText('Obývací pokoj + kuchyně', { timeout: 30_000 });
   const link = page.locator('.tour-link[data-to="chodba"]');
@@ -31,6 +31,20 @@ test('deep link opens the requested room', async ({ page }) => {
   // Link arrows only exist in the DOM while inside the field of view, so assert on the caption instead.
   await expect(page.locator('.psv-caption-content')).toHaveText('Koupelna', { timeout: 30_000 });
   await expect(page).toHaveURL(/room=koupelna/);
+});
+
+test('house with a garden opens outside, where the minimap is hidden', async ({ page }) => {
+  await page.goto('/?house=trojanovice');
+  await expect(page.locator('#header h1')).toHaveText('Beskydská chalupa Trojanovice');
+  await expect(page.locator('.psv-caption-content')).toHaveText('Před chalupou', { timeout: 30_000 });
+  // The garden is not on the floor plan.
+  await expect(page.locator('.psv-map')).toBeHidden();
+});
+
+test('room on the upper floor shows the minimap', async ({ page }) => {
+  await page.goto('/?house=trojanovice&room=loznice2');
+  await expect(page.locator('.psv-caption-content')).toHaveText('Ložnice 2', { timeout: 30_000 });
+  await expect(page.locator('.psv-map')).toBeVisible();
 });
 
 test('unknown house shows czech error', async ({ page }) => {

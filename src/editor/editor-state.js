@@ -100,7 +100,9 @@ export function toJSON(tour) {
       pano: r.pano,
       ...(r.preview ? { preview: r.preview } : {}),
       ...(r.planPos ? { planPos: r.planPos.map((n) => round(n, 4)) } : {}),
+      ...(r.floor ? { floor: r.floor } : {}),
       northOffset: round(r.northOffset, 3),
+      ...(r.startYaw ? { startYaw: round(r.startYaw, 3) } : {}),
       links: r.links.map((l) =>
         l.yaw === null ? { to: l.to, pitch: round(l.pitch, 3) } : { to: l.to, yaw: round(l.yaw, 3), pitch: round(l.pitch, 3) },
       ),

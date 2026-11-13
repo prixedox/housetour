@@ -23,7 +23,8 @@ const outDir = path.join('public', 'houses', houseId);
 await mkdir(path.join(outDir, 'pano'), { recursive: true });
 await mkdir(path.join(outDir, 'exterior'), { recursive: true });
 
-const files = (await readdir(sourceDir)).filter((f) => /\.jpe?g$/i.test(f)).sort();
+// Dot files are skipped: macOS leaves "._name.jpg" metadata files next to copied photos.
+const files = (await readdir(sourceDir)).filter((f) => /\.jpe?g$/i.test(f) && !f.startsWith('.')).sort();
 const rooms = [];
 const exterior = [];
 

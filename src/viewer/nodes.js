@@ -11,6 +11,15 @@ export function entryYaw(linkYaw, fromNorth, toNorth) {
   return normalizeYaw(linkYaw + fromNorth - toNorth);
 }
 
+// Middle of one floor's photo spots on the plan, in plan image pixels.
+export function planAnchor(tour, floor) {
+  const spots = tour.rooms.filter((r) => r.planPos && r.floor === floor).map((r) => r.planPos);
+  if (spots.length === 0) return null;
+  const xs = spots.map((p) => p[0] * tour.plan.width);
+  const ys = spots.map((p) => p[1] * tour.plan.height);
+  return { x: (Math.min(...xs) + Math.max(...xs)) / 2, y: (Math.min(...ys) + Math.max(...ys)) / 2 };
+}
+
 export function tourToNodes(tour, baseUrl) {
   const plan = tour.plan;
   return tour.rooms.map((room) => ({
@@ -24,6 +33,6 @@ export function tourToNodes(tour, baseUrl) {
       .filter((l) => l.yaw !== null)
       .map((l) => ({ nodeId: l.to, position: { yaw: l.yaw, pitch: l.pitch } })),
     map: plan && room.planPos ? { x: room.planPos[0] * plan.width, y: room.planPos[1] * plan.height } : false,
-    data: { northOffset: room.northOffset },
+    data: { northOffset: room.northOffset, floor: room.floor },
   }));
 }

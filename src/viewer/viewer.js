@@ -9,7 +9,7 @@ import '@photo-sphere-viewer/markers-plugin/index.css';
 import '@photo-sphere-viewer/map-plugin/index.css';
 import '@photo-sphere-viewer/gallery-plugin/index.css';
 import '@photo-sphere-viewer/virtual-tour-plugin/index.css';
-import { tourToNodes, entryYaw } from './nodes.js';
+import { tourToNodes, entryYaw, planAnchor } from './nodes.js';
 
 const LANG = {
   zoom: 'Přiblížení',
@@ -41,15 +41,6 @@ const minimapZoom = () => (10 * minimapSize()) / 260;
 // The plan image has wide margins (dimension lines, carport), so overfill the screen a bit.
 const OPEN_PLAN_FILL = 1.3;
 
-// Middle of the photo spots on the plan, in plan image pixels.
-export function planAnchor(tour) {
-  const spots = tour.rooms.filter((r) => r.planPos).map((r) => r.planPos);
-  if (spots.length === 0) return null;
-  const xs = spots.map((p) => p[0] * tour.plan.width);
-  const ys = spots.map((p) => p[1] * tour.plan.height);
-  return { x: (Math.min(...xs) + Math.max(...xs)) / 2, y: (Math.min(...ys) + Math.max(...ys)) / 2 };
-}
-
 function linkElement(link) {
   const el = document.createElement('div');
   el.className = 'tour-link';
@@ -60,8 +51,11 @@ function linkElement(link) {
 
 export function createViewer({ container, tour, baseUrl, startRoom, onRoomChange, extraButtons = [] }) {
   const hasPlan = Boolean(tour.plan);
-  // The minimap stays centred on the middle of the house; only the pin moves between rooms.
-  const anchor = hasPlan ? planAnchor(tour) : null;
+  // The minimap stays centred on the middle of the current floor; only the pin moves between
+  // rooms. A tour that starts off the plan (garden) opens on the floor of its first placed room.
+  const onPlan = (r) => Boolean(r.planPos);
+  const firstSpot = tour.rooms.find((r) => r.id === startRoom && onPlan(r)) ?? tour.rooms.find(onPlan);
+  let anchor = hasPlan && firstSpot ? planAnchor(tour, firstSpot.floor) : null;
   const plugins = [
     MarkersPlugin,
     [GalleryPlugin, { hideOnClick: true, thumbnailSize: { width: 160, height: 90 } }],
@@ -98,7 +92,7 @@ export function createViewer({ container, tour, baseUrl, startRoom, onRoomChange
         ? { rotateTo: { yaw: entryYaw(fromLink.position.yaw, fromNode.data.northOffset, toNode.data.northOffset), pitch: 0 } }
         : {}),
     }),
-    ...(hasPlan ? { map: { imageUrl: baseUrl + tour.plan.image, size: { width: tour.plan.width, height: tour.plan.height }, recenter: !anchor } } : {}),
+    ...(hasPlan ? { map: { imageUrl: baseUrl + tour.plan.image, size: { width: tour.plan.width, height: tour.plan.height }, recenter: false } } : {}),
   }]);
 
   const navbar = ['zoom', 'move', 'gallery', 'gyroscope', ...extraButtons, 'caption', 'fullscreen'];
@@ -108,6 +102,7 @@ export function createViewer({ container, tour, baseUrl, startRoom, onRoomChange
     lang: LANG,
     loadingTxt: 'Načítání…',
     defaultZoomLvl: 30,
+    defaultYaw: tour.rooms.find((r) => r.id === startRoom)?.startYaw ?? 0,
     touchmoveTwoFingers: false,
     mousewheelCtrlKey: false,
     navbar,
@@ -130,16 +125,15 @@ export function createViewer({ container, tour, baseUrl, startRoom, onRoomChange
   });
 
   // The minimap re-centres on the current room after it closes from full size; pan it back
-  // to the middle of the house. setCenter(x, false) moves only the pin, not the view.
+  // to the middle of the floor. setCenter(x, false) moves only the pin, not the view.
   const mapEl = viewer.container.querySelector('.psv-map');
-  if (map && anchor && mapEl) {
-    mapEl.addEventListener('transitionend', () => {
-      const room = map.config.center;
-      if (!room || mapEl.classList.contains('psv-map--maximized')) return;
-      map.setCenter(anchor);
-      map.setCenter(room, false);
-    });
-  }
+  const showFloor = () => {
+    const room = map.config.center;
+    if (!anchor || !room || mapEl.classList.contains('psv-map--maximized')) return;
+    map.setCenter(anchor);
+    map.setCenter(room, false);
+  };
+  mapEl?.addEventListener('transitionend', showFloor);
 
   if (map && mapEl) {
     // Phone rotated or window resized across the breakpoint.
@@ -168,7 +162,16 @@ export function createViewer({ container, tour, baseUrl, startRoom, onRoomChange
   }
 
   vt.addEventListener('node-changed', ({ node }) => {
-    map?.setOptions({ rotation: node.data.northOffset });
+    if (map) {
+      map.setOptions({ rotation: node.data.northOffset });
+      // Rooms that are not on the plan (garden, drone view) have no pin to show. The plugin
+      // shows the map itself once the plan image loads, so hide it with a style instead.
+      mapEl.style.visibility = node.map ? '' : 'hidden';
+      if (node.map) {
+        anchor = planAnchor(tour, node.data.floor);
+        showFloor();
+      }
+    }
     onRoomChange?.(node.id);
   });
 
