@@ -1,0 +1,84 @@
+{
+  "plan": { "originPx": [659, 1266], "mmPerPx": 6.598 },
+  "ceiling": 2600,
+  "eave": 2900,
+  "ground": -250,
+  "floor": "oak",
+  "materials": {
+    "oak": { "texture": "textures/floor-oak.jpg", "size": 0.8, "color": "#b98e5c", "roughness": 0.55 },
+    "trim": { "texture": "textures/floor-oak.jpg", "size": 0.6, "color": "#b98e5c", "roughness": 0.5 },
+    "tile": { "texture": "textures/tile-bath.jpg", "size": 1.2, "color": "#d8d3c2", "tint": "#f0e2cc", "roughness": 0.3 },
+    "roof": { "texture": "textures/roof.jpg", "size": 2.0, "color": "#6b3b2c", "tint": "#a8806c", "roughness": 0.7 },
+    "grass": { "texture": "textures/grass.jpg", "size": 12.0, "color": "#6f8a34", "tint": "#b8c2a0", "roughness": 1 },
+    "wall": { "color": "#efede8", "roughness": 0.9 },
+    "ceiling": { "color": "#f6f5f1", "roughness": 0.95 },
+    "plaster": { "color": "#e2c896", "roughness": 1 },
+    "plinth": { "color": "#7d7873", "roughness": 1 },
+    "paving": { "color": "#8f8a83", "roughness": 0.9 },
+    "frame": { "color": "#f4f4f2", "roughness": 0.4 },
+    "wood": { "color": "#9b6a3c", "roughness": 0.7 },
+    "glass": { "color": "#cfe3ea", "glass": true }
+  },
+  "walls": [
+    { "rect": [0, 0, 12300, 305], "exterior": true },
+    { "rect": [0, 9195, 12300, 9500], "exterior": true },
+    { "rect": [0, 305, 305, 9195], "exterior": true },
+    { "rect": [11995, 305, 12300, 9195], "exterior": true },
+    { "rect": [3305, 305, 3430, 9195] },
+    { "rect": [305, 4688, 3305, 4813] },
+    { "rect": [3430, 3605, 8995, 3730] },
+    { "rect": [5405, 305, 5530, 3605] },
+    { "rect": [6920, 305, 7045, 2380] },
+    { "rect": [7045, 2255, 8870, 2380] },
+    { "rect": [7520, 2380, 7645, 3605] },
+    { "rect": [8870, 305, 8995, 3605] },
+    { "rect": [4730, 5030, 6995, 5155] },
+    { "rect": [4730, 5155, 4855, 5770] },
+    { "rect": [3430, 5770, 4855, 5895] },
+    { "rect": [6870, 5155, 6995, 9195] }
+  ],
+  "openings": [
+    { "id": "02", "rect": [3730, 0, 4930, 305], "sill": 1600, "head": 2300, "type": "window" },
+    { "id": "01", "rect": [5620, 0, 6680, 305], "sill": 0, "head": 2300, "type": "entrance" },
+    { "id": "09", "rect": [7370, 0, 8570, 305], "sill": 1600, "head": 2300, "type": "window" },
+    { "id": "08", "rect": [9695, 0, 11295, 305], "sill": 950, "head": 2300, "type": "window" },
+    { "id": "03", "rect": [0, 2350, 305, 3950], "sill": 950, "head": 2300, "type": "window" },
+    { "id": "04", "rect": [0, 5550, 305, 7150], "sill": 950, "head": 2300, "type": "window" },
+    { "id": "07", "rect": [11995, 3950, 12300, 5550], "sill": 950, "head": 2300, "type": "window" },
+    { "id": "05", "rect": [4350, 9195, 5950, 9500], "sill": 950, "head": 2300, "type": "window" },
+    { "id": "06", "rect": [7695, 9195, 11295, 9500], "sill": 0, "head": 2300, "type": "window" },
+    { "rect": [3305, 3860, 3430, 4660], "sill": 0, "head": 1970, "type": "door" },
+    { "rect": [3305, 4880, 3430, 5680], "sill": 0, "head": 1970, "type": "door" },
+    { "rect": [3780, 3605, 4480, 3730], "sill": 0, "head": 1970, "type": "door" },
+    { "rect": [3700, 5770, 4500, 5895], "sill": 0, "head": 1970, "type": "door" },
+    { "rect": [5900, 3605, 6700, 3730], "sill": 0, "head": 1970, "type": "door" },
+    { "rect": [6920, 950, 7045, 1550], "sill": 0, "head": 1970, "type": "door" },
+    { "rect": [8870, 2850, 8995, 3450], "sill": 0, "head": 1970, "type": "door" }
+  ],
+  "rooms": [
+    { "id": "pokoj105", "rects": [[305, 305, 3305, 4688]] },
+    { "id": "pokoj106", "rects": [[305, 4813, 3305, 9195]] },
+    { "id": "koupelna", "rects": [[3430, 305, 5405, 3605]], "lining": { "material": "tile", "height": 2100 } },
+    { "id": "zadveri", "rects": [[5530, 305, 6920, 2380], [5530, 2380, 7520, 3605]] },
+    { "id": "technicka", "rects": [[7045, 305, 8870, 2255]], "lining": { "material": "tile", "height": 1500 } },
+    { "id": "spiz", "name": "Spíž", "rects": [[7645, 2380, 8870, 3605]] },
+    { "id": "chodba", "rects": [[3430, 3730, 6995, 5030], [3430, 5030, 4730, 5770]] },
+    { "id": "loznice", "rects": [[4855, 5155, 6870, 5895], [3430, 5895, 6870, 9195]] },
+    { "id": "obyvak", "rects": [[8995, 305, 11995, 3730], [6995, 3730, 11995, 9195]] }
+  ],
+  "roofs": [
+    { "rect": [-500, -500, 12800, 10000], "pitch": 25, "base": 2900, "ridge": "x" },
+    { "rect": [4955, -1500, 7395, 600], "pitch": 25, "base": 2900, "ridge": "z", "gable": true },
+    { "rect": [6995, 9500, 12550, 13000], "pitch": 20, "base": 2700, "ridge": "x" }
+  ],
+  "posts": [
+    { "at": [5300, -1155], "height": 2900 },
+    { "at": [7050, -1155], "height": 2900 },
+    { "at": [7385, 12560], "height": 2700 },
+    { "at": [11605, 12560], "height": 2700 }
+  ],
+  "slabs": [
+    { "rect": [4955, -1500, 7395, 0], "top": -80, "material": "paving" },
+    { "rect": [6995, 9500, 12550, 13000], "top": -80, "material": "paving" }
+  ]
+}

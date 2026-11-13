@@ -1,0 +1,192 @@
+{
+  "title": "Novostavba RD Krnalovice",
+  "start": "obyvak",
+  "plan": {
+    "image": "plan.png",
+    "width": 2906,
+    "height": 3250
+  },
+  "rooms": [
+    {
+      "id": "obyvak",
+      "name": "Obývací pokoj + kuchyně",
+      "pano": "pano/obyvak.jpg",
+      "preview": "pano/obyvak-preview.jpg",
+      "planPos": [
+        0.7319,
+        0.6097
+      ],
+      "northOffset": -0.02,
+      "links": [
+        {
+          "to": "chodba",
+          "yaw": -1.54,
+          "pitch": -0.2
+        }
+      ]
+    },
+    {
+      "id": "chodba",
+      "name": "Chodba",
+      "pano": "pano/chodba.jpg",
+      "preview": "pano/chodba-preview.jpg",
+      "planPos": [
+        0.4396,
+        0.5929
+      ],
+      "northOffset": 2.919,
+      "links": [
+        {
+          "to": "koupelna",
+          "yaw": -2.7,
+          "pitch": -0.27
+        },
+        {
+          "to": "zadveri",
+          "yaw": -1.67,
+          "pitch": -0.2
+        },
+        {
+          "to": "obyvak",
+          "yaw": -1.39,
+          "pitch": -0.14
+        },
+        {
+          "to": "loznice",
+          "yaw": 0.24,
+          "pitch": -0.25
+        },
+        {
+          "to": "pokoj106",
+          "yaw": 0.91,
+          "pitch": -0.25
+        },
+        {
+          "to": "pokoj105",
+          "yaw": 1.95,
+          "pitch": -0.25
+        }
+      ]
+    },
+    {
+      "id": "zadveri",
+      "name": "Zádveří",
+      "pano": "pano/zadveri.jpg",
+      "preview": "pano/zadveri-preview.jpg",
+      "planPos": [
+        0.5585,
+        0.4788
+      ],
+      "northOffset": 0.057,
+      "links": [
+        {
+          "to": "technicka",
+          "yaw": 0.6,
+          "pitch": -0.2
+        },
+        {
+          "to": "chodba",
+          "yaw": 3.06,
+          "pitch": -0.25
+        }
+      ]
+    },
+    {
+      "id": "technicka",
+      "name": "Technická místnost",
+      "pano": "pano/technicka.jpg",
+      "preview": "pano/technicka-preview.jpg",
+      "planPos": [
+        0.6417,
+        0.4481
+      ],
+      "northOffset": 1.627,
+      "links": [
+        {
+          "to": "zadveri",
+          "yaw": 3.09,
+          "pitch": -0.25
+        }
+      ]
+    },
+    {
+      "id": "koupelna",
+      "name": "Koupelna",
+      "pano": "pano/koupelna.jpg",
+      "preview": "pano/koupelna-preview.jpg",
+      "planPos": [
+        0.449,
+        0.5012
+      ],
+      "northOffset": 3.089,
+      "links": [
+        {
+          "to": "chodba",
+          "yaw": 0.14,
+          "pitch": -0.25
+        }
+      ]
+    },
+    {
+      "id": "loznice",
+      "name": "Ložnice",
+      "pano": "pano/loznice.jpg",
+      "preview": "pano/loznice-preview.jpg",
+      "planPos": [
+        0.4761,
+        0.7433
+      ],
+      "northOffset": 1.487,
+      "links": [
+        {
+          "to": "chodba",
+          "yaw": -1.75,
+          "pitch": -0.2
+        }
+      ]
+    },
+    {
+      "id": "pokoj105",
+      "name": "Pokoj 1",
+      "pano": "pano/pokoj105.jpg",
+      "preview": "pano/pokoj105-preview.jpg",
+      "planPos": [
+        0.3204,
+        0.518
+      ],
+      "northOffset": -0.023,
+      "links": [
+        {
+          "to": "chodba",
+          "yaw": 2.39,
+          "pitch": -0.2
+        }
+      ]
+    },
+    {
+      "id": "pokoj106",
+      "name": "Pokoj 2",
+      "pano": "pano/pokoj106.jpg",
+      "preview": "pano/pokoj106-preview.jpg",
+      "planPos": [
+        0.3444,
+        0.7105
+      ],
+      "northOffset": 2.869,
+      "links": [
+        {
+          "to": "chodba",
+          "yaw": -2.26,
+          "pitch": -0.2
+        }
+      ]
+    }
+  ],
+  "exterior": [
+    "exterior/01.jpg",
+    "exterior/02.jpg",
+    "exterior/03.jpg",
+    "exterior/04.jpg",
+    "exterior/05.jpg"
+  ]
+}
