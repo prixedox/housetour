@@ -1,0 +1,32 @@
+// Publishes the preview to GitHub Pages (branch gh-pages of origin):
+//   /housetour/            mirrored website from site/
+//   /housetour/prohlidka/  the tour app, built from the current working tree
+// Usage: node scripts/deploy-pages.mjs
+import { execFileSync } from 'node:child_process';
+import { cpSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+
+const BASE = '/housetour/';
+const run = (cmd, args, cwd) => execFileSync(cmd, args, { cwd, stdio: 'inherit', shell: process.platform === 'win32' });
+const out = (cmd, args) => execFileSync(cmd, args, { encoding: 'utf8' }).trim();
+
+const dir = join(tmpdir(), 'housetour-pages');
+rmSync(dir, { recursive: true, force: true });
+mkdirSync(dir, { recursive: true });
+
+cpSync('site', dir, { recursive: true, filter: (src) => !src.endsWith('.extra-urls') });
+run('npx', ['vite', 'build', `--base=${BASE}prohlidka/`, '--outDir', join(dir, 'prohlidka'), '--emptyOutDir']);
+// earlier preview links pointed to /housetour/vikymont/
+mkdirSync(join(dir, 'vikymont'), { recursive: true });
+writeFileSync(join(dir, 'vikymont', 'index.html'), `<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=${BASE}galerie-domu/"><link rel="canonical" href="${BASE}galerie-domu/">`);
+writeFileSync(join(dir, '.nojekyll'), '');
+
+const remote = out('git', ['remote', 'get-url', 'origin']);
+const name = out('git', ['config', 'user.name']);
+const email = out('git', ['config', 'user.email']);
+run('git', ['init', '-q', '-b', 'gh-pages'], dir);
+run('git', ['-c', 'core.autocrlf=false', 'add', '-A'], dir);
+run('git', ['-c', `user.name=${name}`, '-c', `user.email=${email}`, 'commit', '-qm', 'deploy: preview site and house tour'], dir);
+run('git', ['push', '-qf', remote, 'gh-pages'], dir);
+console.log('Deployed. GitHub Pages updates within a minute or two.');
