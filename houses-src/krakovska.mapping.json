@@ -1,10 +1,10 @@
 {
-  "photo360.jpg": { "id": "obyvak", "name": "Obývací pokoj + kuchyně" },
-  "photo360 (1).jpg": { "id": "technicka", "name": "Technická místnost" },
-  "photo360 (2).jpg": { "id": "zadveri", "name": "Zádveří" },
-  "photo360 (3).jpg": { "id": "koupelna", "name": "Koupelna" },
-  "photo360 (4).jpg": { "id": "chodba", "name": "Chodba" },
-  "photo360 (5).jpg": { "id": "loznice", "name": "Ložnice" },
-  "photo360 (6).jpg": { "id": "pokoj106", "name": "Pokoj 2" },
-  "photo360 (7).jpg": { "id": "pokoj105", "name": "Pokoj 1" }
+  "krak obyvak.jpg": { "id": "obyvak", "name": "Obývací pokoj + kuchyně" },
+  "krak technicka.jpg": { "id": "technicka", "name": "Technická místnost" },
+  "krak predsin.jpg": { "id": "zadveri", "name": "Zádveří" },
+  "krak chodba.jpg": { "id": "chodba", "name": "Chodba" },
+  "krak loznice.jpg": { "id": "loznice", "name": "Ložnice" },
+  "krak pokoj 2.jpg": { "id": "pokoj106", "name": "Pokoj 2" },
+  "krak pokoj 1.jpg": { "id": "pokoj105", "name": "Pokoj 1" },
+  "krak koupelna.jpg": { "id": "koupelna", "name": "Koupelna" }
 }

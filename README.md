@@ -26,3 +26,32 @@ URL parameters: `house=<id>` (house folder), `room=<id>` (start room), `edit` (e
    - face the top side of the plan → "Nastavit sever",
    - fix everything in "Kontrola".
 6. "Export tour.json" → replace `public/houses/<id>/tour.json`, commit.
+
+## 3D model
+
+`/?house=<id>&view=3d` shows a 3D model of the house: a dollhouse view from above ("Shora"),
+the exterior with the roof ("Zvenku") and a first-person walk ("Procházet": drag to look,
+W A S D / arrow keys to walk, click the floor to go there). Room labels and the rings on the
+floor open that room's 360° photo; the "3D" button in the 360° tour opens the model.
+The button only appears when the house has a `model.json`.
+
+The model is `public/houses/<id>/model.json`, written by hand from the floor plan's
+dimension lines (millimetres, origin at the outer top-left corner of the house, x to the
+right, z down the plan):
+
+- `walls` and `openings` (doors and windows with `sill` and `head` heights) as plan rectangles;
+  walls are cut around the openings automatically,
+- `rooms` with the tour room `id` and their floor rectangles, optional tile `lining`,
+- `roofs` (hip, or `gable`), `posts`, `slabs`, `materials`,
+- `plan.originPx` / `plan.mmPerPx`: where the house corner is in `plan.png` and the pixel
+  size, so the tour's `planPos` maps onto the model.
+
+Textures (floor, tiles, roof, grass) are cut out of the house's own photos:
+
+```powershell
+node scripts/sample-textures.mjs <id> --raw   # writes public/houses/<id>/textures/
+```
+
+`houses-src/<id>.textures.json` says where each one comes from: a top-down floor patch or a
+straight view out of a panorama (angles in degrees, distances in metres), or a pixel crop of
+a normal photo. `--raw` also writes the patches before they are made seamless, to check them.

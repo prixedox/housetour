@@ -1,0 +1,9 @@
+{
+  "camHeight": 1.5,
+  "textures": [
+    { "name": "floor-oak", "source": "pano/obyvak.jpg", "floor": { "yaw": -158, "dist": 1.0, "size": 1.0, "rotate": 20 }, "px": 640 },
+    { "name": "tile-bath", "source": "pano/koupelna.jpg", "view": { "yaw": -128, "pitch": -8, "fov": 26 }, "px": 512 },
+    { "name": "roof", "source": "exterior/04.jpg", "crop": [470, 740, 140, 140], "out": 512 },
+    { "name": "grass", "source": "exterior/04.jpg", "crop": [1780, 160, 200, 200], "out": 512 }
+  ]
+}
