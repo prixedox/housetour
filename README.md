@@ -67,3 +67,13 @@ node scripts/sample-textures.mjs <id> --raw   # writes public/houses/<id>/textur
 `houses-src/<id>.textures.json` says where each one comes from: a top-down floor patch or a
 straight view out of a panorama (angles in degrees, distances in metres), or a pixel crop of
 a normal photo. `--raw` also writes the patches before they are made seamless, to check them.
+
+## Preview websites
+
+`node scripts/deploy-pages.mjs` publishes everything to GitHub Pages (branch `gh-pages`):
+
+- `/housetour/` – copy of vikymont.cz from `site/`,
+- `/housetour/prohlidka/` – this tour app (`?house=krakovska`, `?house=trojanovice`),
+- `/housetour/beskydskachalupa/` – new design of beskydskachalupa.cz from `beskydskachalupa/`
+  (plain HTML, CSS and JS, no build step). It embeds the Trojanovice tour from `../prohlidka/`
+  and is marked `noindex` until it replaces the live site.

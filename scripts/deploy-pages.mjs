@@ -1,6 +1,7 @@
 // Publishes the preview to GitHub Pages (branch gh-pages of origin):
 //   /housetour/            mirrored website from site/
 //   /housetour/prohlidka/  the tour app, built from the current working tree
+//   /housetour/beskydskachalupa/  new design of beskydskachalupa.cz from beskydskachalupa/
 // Usage: node scripts/deploy-pages.mjs
 import { execFileSync } from 'node:child_process';
 import { cpSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
@@ -17,6 +18,7 @@ rmSync(dir, { recursive: true, force: true });
 mkdirSync(dir, { recursive: true });
 
 cpSync('site', dir, { recursive: true, filter: (src) => !src.endsWith('.extra-urls') });
+cpSync('beskydskachalupa', join(dir, 'beskydskachalupa'), { recursive: true });
 run('npx', ['vite', 'build', `--base=${BASE}prohlidka/`, '--outDir', join(dir, 'prohlidka'), '--emptyOutDir']);
 // earlier preview links pointed to /housetour/vikymont/
 mkdirSync(join(dir, 'vikymont'), { recursive: true });
