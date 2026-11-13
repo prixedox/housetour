@@ -249,3 +249,54 @@ button.model3d-label:hover { background: rgba(17, 17, 17, 0.95); }
     display: none;
   }
 }
+
+/* Floor switch on the plan (houses with several floors) */
+.floor-tabs {
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  gap: 2px;
+  padding: 2px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.floor-tabs button {
+  border: 0;
+  border-radius: 999px;
+  padding: 3px 10px;
+  background: transparent;
+  color: #fff;
+  font: 600 12px/1.4 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.floor-tabs button.is-active {
+  background: var(--accent);
+  color: #111;
+}
+
+.psv-map--maximized .floor-tabs {
+  top: 14px;
+  padding: 4px;
+}
+
+.psv-map--maximized .floor-tabs button {
+  padding: 8px 18px;
+  font-size: 15px;
+}
+
+.psv-map--collapsed .floor-tabs {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  /* The small phone minimap only opens the plan; the tabs are in the opened plan. */
+  .psv-map:not(.psv-map--maximized) .floor-tabs {
+    display: none;
+  }
+}

@@ -47,6 +47,17 @@ test('room on the upper floor shows the minimap', async ({ page }) => {
   await expect(page.locator('.psv-map')).toBeVisible();
 });
 
+test('plan has a tab for each floor', async ({ page }) => {
+  await page.goto('/?house=trojanovice&room=loznice2');
+  await expect(page.locator('.psv-caption-content')).toHaveText('Ložnice 2', { timeout: 30_000 });
+  const active = page.locator('.floor-tabs button.is-active');
+  await expect(active).toHaveText('Podkroví');
+  await page.locator('.floor-tabs button', { hasText: 'Přízemí' }).click();
+  await expect(active).toHaveText('Přízemí');
+  // Looking at another floor does not leave the room.
+  await expect(page.locator('.psv-caption-content')).toHaveText('Ložnice 2');
+});
+
 test('unknown house shows czech error', async ({ page }) => {
   await page.goto('/?house=neexistuje');
   await expect(page.locator('.error-screen')).toHaveText('Prohlídka „neexistuje“ neexistuje.');

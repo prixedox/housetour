@@ -21,8 +21,9 @@ URL parameters: `house=<id>` (house folder), `room=<id>` (start room), `edit` (e
 3. `node scripts/prepare-house.mjs <photoFolder> <id> --map houses-src/<id>.mapping.json --title "Název domu"` (`--title` sets the tour title, default is the id; mapping ids must match `a-z0-9-` and be unique; the title can also be changed later in the editor field "Název prohlídky").
 4. `node scripts/render-plan.mjs <plan.pdf> <id> --crop x,y,w,h` (crop as page fractions; check `plan.png`, adjust).
    A house with several floors takes one PDF per floor, drawn side by side into one `plan.png`:
-   `node scripts/render-plan.mjs <přízemí.pdf> <podkroví.pdf> <id> --rotate 270 --crop … --crop …`
-   (`--rotate` turns sideways drawings upright, one `--crop` per floor, given as the turned page looks).
+   `node scripts/render-plan.mjs <přízemí.pdf> <podkroví.pdf> <id> --rotate 270 --crop … --crop … --floor "Přízemí" --floor "Podkroví"`
+   (`--rotate` turns sideways drawings upright; one `--crop` per floor, given as the turned page looks;
+   one `--floor` name per PDF, written to `plan.floors` and shown as tabs on the plan).
 5. `npm run dev`, open `/?house=<id>&edit`:
    - per room: pick target → "Přidat průchod" → click the doorway,
    - "Umístit na plán" → click the room on the plan,
@@ -32,8 +33,8 @@ URL parameters: `house=<id>` (house folder), `room=<id>` (start room), `edit` (e
 
 Optional fields of a room in `tour.json`, written by hand:
 
-- `floor`: name of the floor (for example `"prizemi"`, `"podkrovi"`). The minimap then shows only
-  the floor of the current room; the opened plan shows all floors.
+- `floor`: name of the floor, one of the names in `plan.floors` (for example `"Přízemí"`). The plan
+  then shows the floor of the current room, with tabs to look at the others.
 - `startYaw`: where the view points (radians) when the tour opens in that room.
 - A room without `planPos` (garden, drone photo) hides the minimap while you are in it.
 

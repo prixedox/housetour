@@ -11,8 +11,11 @@ export function entryYaw(linkYaw, fromNorth, toNorth) {
   return normalizeYaw(linkYaw + fromNorth - toNorth);
 }
 
-// Middle of one floor's photo spots on the plan, in plan image pixels.
+// Where the minimap centres for one floor, in plan image pixels: the middle of that floor's
+// part of the plan image when the plan lists its floors, else the middle of its photo spots.
 export function planAnchor(tour, floor) {
+  const part = tour.plan.floors?.find((f) => f.name === floor);
+  if (part) return { x: part.x + part.width / 2, y: tour.plan.height / 2 };
   const spots = tour.rooms.filter((r) => r.planPos && r.floor === floor).map((r) => r.planPos);
   if (spots.length === 0) return null;
   const xs = spots.map((p) => p[0] * tour.plan.width);

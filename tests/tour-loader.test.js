@@ -27,6 +27,12 @@ describe('validateTour', () => {
     expect(tour.rooms.map((r) => r.startYaw)).toEqual([1.2, 0]);
   });
 
+  it('keeps where each floor sits in the plan image', () => {
+    const plan = { image: 'plan.png', width: 3000, height: 1000, floors: [{ name: 'Přízemí', x: 0, width: 1400 }, { name: 'Podkroví', x: 1600, width: 1400 }, { name: 'bez šířky', x: 5 }] };
+    const { tour } = validateTour({ plan, rooms: [room('a')] });
+    expect(tour.plan.floors).toEqual([{ name: 'Přízemí', x: 0, width: 1400 }, { name: 'Podkroví', x: 1600, width: 1400 }]);
+  });
+
   it('keeps the floor of a room when it is a name', () => {
     const { tour } = validateTour({ rooms: [room('a', { floor: 'podkrovi' }), room('b', { floor: 2 })] });
     expect(tour.rooms.map((r) => r.floor)).toEqual(['podkrovi', null]);

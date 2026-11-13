@@ -40,6 +40,8 @@ const minimapSize = () => (PHONE.matches ? 140 : 260);
 const minimapZoom = () => (10 * minimapSize()) / 260;
 // The plan image has wide margins (dimension lines, carport), so overfill the screen a bit.
 const OPEN_PLAN_FILL = 1.3;
+// One floor of a plan with several is cropped tight; leave room for the tabs and toolbar.
+const OPEN_FLOOR_FILL = 0.9;
 
 function linkElement(link) {
   const el = document.createElement('div');
@@ -55,7 +57,11 @@ export function createViewer({ container, tour, baseUrl, startRoom, onRoomChange
   // rooms. A tour that starts off the plan (garden) opens on the floor of its first placed room.
   const onPlan = (r) => Boolean(r.planPos);
   const firstSpot = tour.rooms.find((r) => r.id === startRoom && onPlan(r)) ?? tour.rooms.find(onPlan);
-  let anchor = hasPlan && firstSpot ? planAnchor(tour, firstSpot.floor) : null;
+  // Floors drawn side by side in the plan image; the plan shows one of them at a time.
+  const floors = tour.plan?.floors ?? [];
+  const multi = floors.length > 1;
+  let viewFloor = firstSpot?.floor ?? null;
+  let anchor = hasPlan && firstSpot ? planAnchor(tour, viewFloor) : null;
   const plugins = [
     MarkersPlugin,
     [GalleryPlugin, { hideOnClick: true, thumbnailSize: { width: 160, height: 90 } }],
@@ -114,26 +120,61 @@ export function createViewer({ container, tour, baseUrl, startRoom, onRoomChange
 
   // The opened (maximised) plan keeps the minimap's zoom by default, which leaves it tiny
   // on a big screen; zoom it to fill the view instead, and back when it is minimised.
+  const openZoom = () => {
+    const { clientWidth: w, clientHeight: h } = viewer.container;
+    const part = multi && floors.find((f) => f.name === viewFloor);
+    const fit = Math.min(w / (part ? part.width : tour.plan.width), h / tour.plan.height);
+    return fit * (part ? OPEN_FLOOR_FILL : OPEN_PLAN_FILL) * 100;
+  };
   map?.addEventListener('view-changed', ({ view }) => {
-    if (view === 'maximized') {
-      const { clientWidth: w, clientHeight: h } = viewer.container;
-      const fit = Math.min(w / tour.plan.width, h / tour.plan.height);
-      map.setZoom(fit * OPEN_PLAN_FILL * 100);
-    } else {
-      map.setZoom(minimapZoom());
-    }
+    map.setZoom(view === 'maximized' ? openZoom() : minimapZoom());
   });
 
   // The minimap re-centres on the current room after it closes from full size; pan it back
   // to the middle of the floor. setCenter(x, false) moves only the pin, not the view.
   const mapEl = viewer.container.querySelector('.psv-map');
+  const isOpen = () => mapEl.classList.contains('psv-map--maximized');
+  // The opened plan of a single floor follows the current room; with several floors it
+  // stays on the floor being looked at, like the minimap.
   const showFloor = () => {
     const room = map.config.center;
-    if (!anchor || !room || mapEl.classList.contains('psv-map--maximized')) return;
+    if (!anchor || !room || (isOpen() && !multi)) return;
     map.setCenter(anchor);
     map.setCenter(room, false);
   };
-  mapEl?.addEventListener('transitionend', showFloor);
+  mapEl?.addEventListener('transitionend', (e) => {
+    // Buttons inside the map fade too; while the plan is open only its own resize counts,
+    // so the plan does not jump back when someone has dragged it.
+    if (isOpen() && e.target !== mapEl) return;
+    showFloor();
+  });
+
+  // Tabs to look at another floor than the one you stand on.
+  const tabs = multi && mapEl ? document.createElement('div') : null;
+  const lookAtFloor = (name) => {
+    viewFloor = name;
+    anchor = planAnchor(tour, name);
+    tabs?.querySelectorAll('button').forEach((b) => b.classList.toggle('is-active', b.dataset.floor === name));
+    if (multi && isOpen()) map.setZoom(openZoom());
+    showFloor();
+  };
+  if (tabs) {
+    tabs.className = 'floor-tabs';
+    for (const { name } of floors) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.textContent = name;
+      button.dataset.floor = name;
+      button.classList.toggle('is-active', name === viewFloor);
+      tabs.append(button);
+    }
+    tabs.addEventListener('click', (e) => {
+      if (e.target.dataset.floor) lookAtFloor(e.target.dataset.floor);
+    });
+    // The map must not take a press on a tab for a drag or a click on the plan.
+    for (const type of ['mousedown', 'touchstart', 'click']) tabs.addEventListener(type, (e) => e.stopPropagation());
+    mapEl.append(tabs);
+  }
 
   if (map && mapEl) {
     // Phone rotated or window resized across the breakpoint.
@@ -167,10 +208,7 @@ export function createViewer({ container, tour, baseUrl, startRoom, onRoomChange
       // Rooms that are not on the plan (garden, drone view) have no pin to show. The plugin
       // shows the map itself once the plan image loads, so hide it with a style instead.
       mapEl.style.visibility = node.map ? '' : 'hidden';
-      if (node.map) {
-        anchor = planAnchor(tour, node.data.floor);
-        showFloor();
-      }
+      if (node.map) lookAtFloor(node.data.floor);
     }
     onRoomChange?.(node.id);
   });

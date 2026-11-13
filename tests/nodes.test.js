@@ -88,6 +88,11 @@ describe('planAnchor', () => {
     expect(planAnchor(tour, 'podkrovi')).toEqual({ x: 500, y: 375 });
   });
 
+  it('is the middle of the floor in the plan image when the plan lists its floors', () => {
+    const withFloors = { ...tour, plan: { ...tour.plan, floors: [{ name: 'prizemi', x: 0, width: 400 }, { name: 'podkrovi', x: 600, width: 400 }] } };
+    expect(planAnchor(withFloors, 'podkrovi')).toEqual({ x: 800, y: 250 });
+  });
+
   it('is null for a floor without photo spots', () => {
     expect(planAnchor(tour, null)).toBeNull();
   });

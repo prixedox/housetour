@@ -4,7 +4,19 @@
   "plan": {
     "image": "plan.png",
     "width": 5585,
-    "height": 2052
+    "height": 2052,
+    "floors": [
+      {
+        "name": "Přízemí",
+        "x": 0,
+        "width": 2547
+      },
+      {
+        "name": "Podkroví",
+        "x": 2929,
+        "width": 2656
+      }
+    ]
   },
   "rooms": [
     {
@@ -46,7 +58,7 @@
         0.3236,
         0.8536
       ],
-      "floor": "prizemi",
+      "floor": "Přízemí",
       "northOffset": 1.222,
       "startYaw": 0.349,
       "links": [
@@ -81,7 +93,7 @@
         0.3841,
         0.827
       ],
-      "floor": "prizemi",
+      "floor": "Přízemí",
       "northOffset": -0.873,
       "startYaw": -2.094,
       "links": [
@@ -106,7 +118,7 @@
         0.2678,
         0.7132
       ],
-      "floor": "prizemi",
+      "floor": "Přízemí",
       "northOffset": -1.571,
       "startYaw": 1.309,
       "links": [
@@ -141,7 +153,7 @@
         0.2971,
         0.5766
       ],
-      "floor": "prizemi",
+      "floor": "Přízemí",
       "northOffset": -3.142,
       "links": [
         {
@@ -175,7 +187,7 @@
         0.2845,
         0.1972
       ],
-      "floor": "prizemi",
+      "floor": "Přízemí",
       "northOffset": 1.571,
       "links": [
         {
@@ -204,7 +216,7 @@
         0.4017,
         0.2162
       ],
-      "floor": "prizemi",
+      "floor": "Přízemí",
       "northOffset": -0.646,
       "startYaw": 0.785,
       "links": [
@@ -229,7 +241,7 @@
         0.3821,
         0.4704
       ],
-      "floor": "prizemi",
+      "floor": "Přízemí",
       "northOffset": -0.14,
       "links": [
         {
@@ -253,7 +265,7 @@
         0.2036,
         0.2466
       ],
-      "floor": "prizemi",
+      "floor": "Přízemí",
       "northOffset": 3.107,
       "links": [
         {
@@ -272,7 +284,7 @@
         0.2148,
         0.5501
       ],
-      "floor": "prizemi",
+      "floor": "Přízemí",
       "northOffset": -1.484,
       "startYaw": -0.785,
       "links": [
@@ -292,7 +304,7 @@
         0.1478,
         0.6411
       ],
-      "floor": "prizemi",
+      "floor": "Přízemí",
       "northOffset": -1.571,
       "startYaw": 0.873,
       "links": [
@@ -312,7 +324,7 @@
         0.8048,
         0.2846
       ],
-      "floor": "podkrovi",
+      "floor": "Podkroví",
       "northOffset": 0,
       "links": [
         {
@@ -346,7 +358,7 @@
         0.7057,
         0.4516
       ],
-      "floor": "podkrovi",
+      "floor": "Podkroví",
       "northOffset": -1.414,
       "startYaw": -0.524,
       "links": [
@@ -366,7 +378,7 @@
         0.9233,
         0.2694
       ],
-      "floor": "podkrovi",
+      "floor": "Podkroví",
       "northOffset": -1.518,
       "startYaw": 1.745,
       "links": [
@@ -386,7 +398,7 @@
         0.9121,
         0.4668
       ],
-      "floor": "podkrovi",
+      "floor": "Podkroví",
       "northOffset": -1.571,
       "startYaw": 2.443,
       "links": [
@@ -406,7 +418,7 @@
         0.1339,
         0.368
       ],
-      "floor": "prizemi",
+      "floor": "Přízemí",
       "northOffset": -2.915,
       "startYaw": 2.793,
       "links": [
@@ -426,7 +438,7 @@
         0.0753,
         0.44
       ],
-      "floor": "prizemi",
+      "floor": "Přízemí",
       "northOffset": -3.142,
       "links": [
         {
@@ -450,7 +462,7 @@
         0.0139,
         0.8536
       ],
-      "floor": "prizemi",
+      "floor": "Přízemí",
       "northOffset": -1.396,
       "links": [
         {

@@ -10,10 +10,14 @@ const HOUSE_ID = /^[a-z0-9-]+$/;
 const isNonEmptyString = (v) => typeof v === 'string' && v.length > 0;
 const isPoint = (p) => Array.isArray(p) && p.length === 2 && p.every(Number.isFinite);
 
+// A plan image can show several floors side by side; each entry says where one of them sits.
+const isFloor = (f) => f && isNonEmptyString(f.name) && Number.isFinite(f.x) && f.width > 0;
+
 function normalizePlan(plan) {
   if (!plan || !isNonEmptyString(plan.image)) return null;
   if (!(plan.width > 0) || !(plan.height > 0)) return null;
-  return { image: plan.image, width: plan.width, height: plan.height };
+  const floors = Array.isArray(plan.floors) ? plan.floors.filter(isFloor).map(({ name, x, width }) => ({ name, x, width })) : [];
+  return { image: plan.image, width: plan.width, height: plan.height, ...(floors.length > 0 ? { floors } : {}) };
 }
 
 function normalizeRoom(r, index, ids) {
